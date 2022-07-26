@@ -1,0 +1,106 @@
+/* homeleftchild */
+.homeleftchild{
+    width: 850px;
+    margin-top: 90px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/* Normal componentn */
+
+.authorimage{
+    border-radius: 50%;
+    object-fit: cover;
+    height: 30px;
+    width: 30px;
+}
+
+.date{
+    color: grey;
+    font-size: 15px;
+}
+
+.authorname{
+    font-size: 15px;
+}
+
+.topcol{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.botcol{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 650px;
+}
+
+.botcol > p{
+    color: grey;
+}
+
+.midcol{
+    width: 650px;
+}
+
+.midcol > h3{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.midcol > p{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.normalcomponent{
+    width: 850px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding: 10px;
+    /* border: 1px solid black; */
+}
+
+.contentimage{
+    width: 160px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.parenttonormal{
+    width: 850px;
+}
+
+.normalblogs, .trending{
+    margin: 70px;
+}
+
+
+/* rightchild2 */
+
+.tagcontainer > button{
+    border-radius: 10px;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.tagcontainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+}
+
+.homerightchild{
+    padding-left: 15px;
+    position: fixed;
+    right: 15px;
+}
+

@@ -1,0 +1,55 @@
+/* Style for individual blogs */
+
+.indi_blog{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    width: 850px;
+    /* border: 1px solid black; */
+}
+
+
+/* toprow */
+.toprow{
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.toprow > p{
+    color: grey;
+}
+
+
+/* lastrow */
+.midrow > img{
+    width: 100%;
+    object-fit: cover;
+}
+
+
+/* rightchild */
+
+.rightchild{
+    position: fixed;
+    right: 15px;
+    border-left: 1px dotted grey;
+    width: 350px;
+    margin-top: 25px;
+    padding-left: 15px;
+    /* padding-right: 15px; */
+    /* border: 1px solid black; */
+}
+
+.aboutsocialhandles{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.aboutsocialhandles > a{
+    text-decoration: none;
+    color: black;
+}
+

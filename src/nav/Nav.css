@@ -1,0 +1,26 @@
+/* top nav bar css */
+
+.topbarlogo{
+    width: 60px;
+    height:60px;
+}
+
+.topbarlinks{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topnavbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    position: sticky;
+    top: 0px;
+    background-color: grey;
+}
+
+
+
+
