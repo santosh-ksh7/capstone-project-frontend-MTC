@@ -223,7 +223,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
             <div className="midrow">
                 <h2>{obj.title}</h2>
                 <img src={obj.blog_pic} alt={obj.title} />
-                <p>{obj.story}</p>
+                <p style={{textAlign: "left"}}>{obj.story}</p>
             </div>
             <div className="lastrow" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 <p>
@@ -337,7 +337,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
             <div className="keepreadingrow">
                 {/* make the fetch call to DB to display any 3 blogs randomly. Go for different design just to show the versatility */}
                 <h3>Keep reading</h3>
-                <p>More from MyTravelComapanion</p>
+                <p style={{textAlign: "left"}}>More from MyTravelComapanion</p>
                 {keepreadingdata ? keepreadingdata.map((ele,index) => <Blogs obj={ele} key={index} />) : "Loading...."}
                 <Link  style={{marginLeft: "50%", textDecoration: "none", color: "black"}} to="/home">View more</Link>
             </div>
@@ -373,8 +373,8 @@ export function About({obj}) {
                 <img style={{width: "150px", height: "163px", objectFit: "cover", borderRadius: "50%"}} src={obj.user_info.profile_pic} alt={obj.user_info.name} />
             <div>
                 {/* Make the name as a link to direct to author specific page */}
-                <Link style={{textDecoration: "none", color: "black"}} to=""><h4 style={{margin: "0px"}}>{obj.user_info.name}</h4></Link>
-                <p style={{marginTop: "7px", marginBottom : "4px", fontSize: "15px"}}>{obj.user_info.about}</p>
+                <Link style={{textDecoration: "none", color: "black"}} to=""><h4 style={{margin: "0px", textAlign: "left"}}>{obj.user_info.name}</h4></Link>
+                <p style={{marginTop: "7px", marginBottom : "4px", fontSize: "15px", textAlign: "left"}}>{obj.user_info.about}</p>
             </div>
         </div>
         <div className="aboutsocialhandles">
@@ -526,12 +526,12 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
   return (
     <div style={{backgroundColor: "grey", padding: "10px"}}>
         <h3>Comments  ({commentslength})</h3>
-        <p>Comment down your thoughts</p>
+        <p style={{textAlign: "left"}}>Comment down your thoughts</p>
         <form onSubmit={formik.handleSubmit} style={{display: "flex", alignItems: "center", gap: "5px",marginBottom: "13px"}}>
             {/* Update / fetch the image and name using the localstorage data & create the object using formik by adding the profile pic link & name   orrrrrr  else just give user_id if you figured it out */}
             <img style={{borderRadius: "50%", height: "40px", width: "40px", objectFit: "cover"}} src={logged_userinfo.profile_pic} alt={logged_userinfo.name} />
             <div>
-                <h4 style={{margin: "0px"}}>{logged_userinfo.name}</h4>
+                <h4 style={{margin: "0px", textAlign: "left"}}>{logged_userinfo.name}</h4>
                 <input 
                     name="actual_comment" 
                     onChange={formik.handleChange}
@@ -563,7 +563,7 @@ export function Comments({obj}) {
     <div style={{display: "flex", alignItems: "center", gap: "7px", marginBottom: "10px"}}>
         <img style={{borderRadius: "50%", height: "40px", width: "40px", objectFit: "cover"}} src={obj.user_info.profile_pic} alt={obj.user_info.name} />
         <div>
-            <h4 style={{margin: "0px"}}>{obj.user_info.name}</h4>
+            <h4 style={{margin: "0px", textAlign: "left"}}>{obj.user_info.name}</h4>
             <p style={{margin: "0px", fontSize: "15px"}}>{obj.actual_comment}</p>
         </div>
     </div>
