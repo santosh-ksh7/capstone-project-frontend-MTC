@@ -3,7 +3,7 @@ import { Nav } from '../nav/Nav.jsx';
 import { Homerightchild3 } from "../home/Home";
 import { Blogs } from "../home/Home";
 import {Link} from "react-router-dom";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
@@ -68,7 +68,7 @@ export function Openblog() {
     fetch(`${base_url}/keep-reading`).then((data)=>data.json()).then((data)=>setKeepreadingdata(data))
     // fetch call for morefromauthor data i.e.. the right-most component & return any 2 blogs & sotre it in morefromauthor variable from useSate
     fetch(`${base_url}/more-from-author/${id}`).then((data)=>data.json()).then((data)=>{setMorefromauthor(data); console.log("identifier",data);})
-  }, [])
+  }, [id])
   
 
   return (
@@ -83,130 +83,13 @@ export function Openblog() {
 
 
 
-
+// Blog component
 export function Blogcomponent({obj, comments, setComments, logged_userinfo, likeonmount, setLikeonmount, blog_id, author_id, bookmarkonmount, setBookmarkonmount, keepreadingdata, morefromauthor}) {
-
-    // let obj = {
-    //     "_id": {
-    //       "$oid": "62db2ecacc2f07deff68d6ae"
-    //     },
-    //     "date": "21 July",
-    //     "time_to_read": 5,
-    //     "Author": "abcdefgh",
-    //     "title": "This is title 1",
-    //     "story": "This is story 1",
-    //     "blog_pic": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    //     "tag": "mountain",
-    //     "profile_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-    //     "clap": 20,
-    //     "comments": [
-    //       {
-    //         "comment": "This is a good article",
-    //         "c_name": "random user",
-    //         "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //       },
-    //       {
-    //         "comment": "This is a good article",
-    //         "c_name": "random user",
-    //         "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //       },
-    //       {
-    //         "comment": "This is a good article",
-    //         "c_name": "random user",
-    //         "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //       },
-    //       {
-    //         "comment": "This is a good article",
-    //         "c_name": "random user",
-    //         "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //       }
-    //     ]
-    // }
-
-    // let arr = [
-    //     {
-    //         "_id": {
-    //           "$oid": "62db2ecacc2f07deff68d6ae"
-    //         },
-    //         "date": "21 July",
-    //         "time_to_read": 5,
-    //         "Author": "abcdefgh",
-    //         "title": "This is title 1",
-    //         "story": "This is story 1",
-    //         "blog_pic": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    //         "tag": "mountain",
-    //         "profile_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-    //         "clap": 20,
-    //         "comments": [
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           }
-    //         ]
-    //     },
-    //     {
-    //         "_id": {
-    //           "$oid": "62db2ecacc2f07deff68d6ae"
-    //         },
-    //         "date": "21 July",
-    //         "time_to_read": 5,
-    //         "Author": "abcdefgh",
-    //         "title": "This is title 1",
-    //         "story": "This is story 1",
-    //         "blog_pic": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    //         "tag": "mountain",
-    //         "profile_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-    //         "clap": 20,
-    //         "comments": [
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           },
-    //           {
-    //             "comment": "This is a good article",
-    //             "c_name": "random user",
-    //             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    //           }
-    //         ]
-    //     }
-    // ]
-
-    // const[trackclap, setTrackclap] = useState(likeonmount);         // to render the like icons accordingly after the component mounts               {{{{{{{{{{del after like is working as expected}}}}}}}}}}
-    
+  
     const[count, setCount] = useState(obj.clap);
-
-    // const[trackbookmark, setTrackbookmark] = useState(false);         // {{{{{{{del after everything is working as expected}}}}}}}
 
     const[trackcomment, setTrackcomment] = useState(false);                  // to show / hide comments
 
-    // const[actualcomments, setActualcomments] = useState(obj.comments);      {{{{{{{{{{del after comment is set to working}}}}}}}}}}
 
     
 
@@ -356,16 +239,9 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
 }
 
 
-
+// About component
 export function About({obj}) {
-    // const obj={
-    //     profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4mZWAZ6H7rMwse_xz7xZCX6a4blTjTD_eSQ&usqp=CAU",
-    //     name: "Kathy",
-    //     about: "I’m a writer & travel addict originally from Uttrakhand. I have been traveling independently around India. I set up this blog to share my tips and experiences for traveling to inspire and help you to travel more too.",
-    //     fb_link : "fbhdfjkhbfd",
-    //     twitter_link : "sgjklkfbj;ldf",
-    //     insta_link: "kxfcvjlkxfjlfk"
-    // }          {{{{{{{{{{{delete after everything is working fine}}}}}}}}}}}
+    
   return (
     <div>
         <h3 style={{marginBottom: "10px", marginTop: "0px"}}>About the author</h3>
@@ -393,99 +269,30 @@ export function About({obj}) {
   )
 }
 
-export function Morefromauthor({morefromauthor}){
 
-//     let arr = [
-//     {
-//         "_id": {
-//           "$oid": "62db2ecacc2f07deff68d6ae"
-//         },
-//         "date": "21 July",
-//         "time_to_read": 5,
-//         "Author": "abcdefgh",
-//         "title": "This is title 1",
-//         "story": "This is story 1",
-//         "blog_pic": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-//         "tag": "mountain",
-//         "profile_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-//         "clap": 20,
-//         "comments": [
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           }
-//         ]
-//     },
-//     {
-//         "_id": {
-//           "$oid": "62db2ecacc2f07deff68d6ae"
-//         },
-//         "date": "21 July",
-//         "time_to_read": 5,
-//         "Author": "abcdefgh",
-//         "title": "This is title 1",
-//         "story": "This is story 1",
-//         "blog_pic": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-//         "tag": "mountain",
-//         "profile_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-//         "clap": 20,
-//         "comments": [
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           },
-//           {
-//             "comment": "This is a good article",
-//             "c_name": "random user",
-//             "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-//           }
-//         ]
-//     }
-// ]
+// More from Author componenet
+export function Morefromauthor({morefromauthor}){
 
     return(
         <div>
             <h3>More from the author</h3>
-            {/* take any 3 blogs from props and then randomly choose any 2 & loop it out calling Morefromauthorindividual  */}
+            {/* Any 2 different blogs other than currently opened blogs by author & loop it out calling Morefromauthorindividual  */}
             {morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />)}
             {/* Link it to author specific page */}
-            <Link to="" style={{marginLeft: "50%", textDecoration: "none", color: "black"}}>view more</Link>
+            <Link to="" style={{marginLeft: "40%", textDecoration: "none", color: "black"}}>view more</Link>
         </div>
     )
 }
 
+
+// More from Author sub Component
 export function Morefromauthorindividual({obj}){
+
+  const navigate = useNavigate();
+
     return(
         <div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: '8px'}}>
-            {/* link it to open the specific post */}
-            <Link style={{textDecoration: "none", color: 'black'}} to=""><h4 style={{marginTop: "0px"}}>{obj.title}</h4></Link>
+            <h4 onClick={()=> navigate(`/open-a-blog/${obj._id}`)} style={{marginTop: "0px", cursor: "pointer"}}>{obj.title}</h4>
             <img style={{width: "35px", height: "35px", objectFit: "cover"}} src={obj.blog_pic} alt={obj.title} />
         </div>
     )
@@ -493,13 +300,8 @@ export function Morefromauthorindividual({obj}){
 
 
 
-
+// Comments parent
 export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
-    // const obj = {
-    //     "comment": "This is a good article",
-    //     "c_name": "random user",
-    //     "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    // }         {{{{{{{{{ del after checking everything  }}}}}}}}}
 
     const[commentslength, setCommentslength] = useState(comments.length)
 
@@ -551,13 +353,8 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
 }
 
 
+// Comments parent sub component
 export function Comments({obj}) {
-
-    // const obj = {
-    //     "comment": "This is a good article",
-    //     "c_name": "random user",
-    //     "c_pic": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
-    // }          {{{{{{{{{delete after checking everything}}}}}}}}}
 
   return (
     <div style={{display: "flex", alignItems: "center", gap: "7px", marginBottom: "10px"}}>
