@@ -9,6 +9,7 @@
     width: 50%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .topnavbar{
@@ -18,7 +19,15 @@
     padding: 10px;
     position: sticky;
     top: 0px;
-    background-color: grey;
+    background-color:  #958c3a;
+}
+
+.navbarpp{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 

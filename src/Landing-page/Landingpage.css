@@ -1,0 +1,158 @@
+/* footer */
+
+.footerpart{
+    text-align: center;
+}
+.footfirst{
+    font-size: 20px;
+}
+.footfirstdes{
+    font-size: 18px;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    background-color: grey;
+    color: white;
+    margin-top: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.xx1{
+    margin: 10px;
+    font-size: 25px;
+}
+
+
+/* Body part above the footer */
+
+.bpafileft{
+    border-radius: 50%;
+    object-fit: cover;
+    width: 70px;
+    height: 50px;
+    margin: 0px;
+}
+.bpaficentre{
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    width: 100px;
+    margin: 0px;
+    left: -210px;
+}
+.bpafiright{
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0px;
+    width: 70px;
+    height: 50px;
+}
+.bpafimage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+#bpafiright3{
+    position: relative;
+    left: 45px;
+}
+#bpafiright2{
+    position: relative;
+    left: 65px;
+}
+#bpafiright1{
+    position: relative;
+    left: 85px;
+}
+#bpafileft1{
+    position: relative;
+    left: 39px;
+}
+#bpafileft2{
+    position: relative;
+    left: 26px;
+}
+#bpafileft3{
+    position: relative;
+    left: 13px;
+}
+.bpafheading{
+    text-align: center;
+    margin-bottom: 15px;
+}
+.bpafdes{
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.bpjbfcontainer{
+    width: 200px;
+    padding: 10px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 30px;
+}
+.bpjbf{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.bpjbfcontdes{
+    font-size: 13px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-top: 2.5px;
+}
+
+
+
+/* in the spotlight */
+
+.title{
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+.titledes{
+    margin-left: 20px;
+    margin-top: 5px;
+}
+.spotcontainerflex{
+    display: flex;
+}
+.spotcontaioner{
+    text-align: center;
+    margin: 20px;
+}
+.iii{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.lll{
+    margin-top: 5px;
+}
+.ooo{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.aaaaaa{
+    color: blue;
+    text-align: center;
+}
+
+
+
+/* new footer */
+
+.anchor > a{
+    text-decoration: none;
+    color: grey;
+}
+
+
+

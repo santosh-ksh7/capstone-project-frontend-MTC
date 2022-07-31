@@ -1,0 +1,26 @@
+.rightchild{
+    width: 350px;
+    padding-left: 15px;
+    position: fixed;
+    right: 15px;
+    border-left: 1px dotted grey;
+    margin-top: 50px;
+}
+
+.ri8chld1{
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+
+.leftchild{
+    width: 850px;
+    margin: 50px;
+}
+
+.maimg{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

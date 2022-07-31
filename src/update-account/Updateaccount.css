@@ -1,0 +1,50 @@
+.rightchild{
+    width: 350px;
+    padding-left: 15px;
+    position: fixed;
+    right: 15px;
+    border-left: 1px dotted grey;
+    margin-top: 30px;
+}
+
+.leftchild{
+    width: 850px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 30px;
+}
+
+.imgup{
+    width: 175px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.rightchildupdate{
+    display: flex;
+    flex-direction: column;
+}
+
+#ppup{
+    display: none;
+}
+
+.rmpp{
+    width: 150px;
+    cursor: pointer;
+}
+
+.setnew{
+    width: 150px;
+    padding: 3px;
+    cursor: pointer;
+    border: 1px solid grey;
+    background-color: grey;
+}
+
+.upaccountinfo{
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    width: 500px;
+}

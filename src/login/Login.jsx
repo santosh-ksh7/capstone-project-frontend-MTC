@@ -16,7 +16,7 @@ const base_url = "http://localhost:5000";
 
 export function Login() {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const[showpwd, setShowpwd] = useState(false)
 
@@ -43,6 +43,7 @@ export function Login() {
             localStorage.setItem("token", data.token)
             localStorage.setItem("_id", data._id)
             // navigate to / (i.e.. landing page of your application)
+            navigate("/")
           }else{
             alert(data.msg)
           }

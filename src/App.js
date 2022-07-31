@@ -8,6 +8,9 @@ import { Forgotpwd3 } from './forgot-password-3/Forgotpwd3';
 import { Writeablog } from './write-a-blog/Writeablog';
 import { Createaccount } from './create-account/Createaccount';
 import { Login } from './login/Login';
+import { Landingpage } from './Landing-page/Landingpage';
+import { Myaccount } from './my-account/Myaccount';
+import { Updateaccount } from './update-account/Updateaccount';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -17,6 +20,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/" element={<Landingpage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/open-a-blog/:id" element={<Openblog />} />
         <Route path='/login' element={<Login />} />
@@ -26,6 +30,8 @@ function App() {
         {/* <Route path='/forgot-password-4' element={<Forgotpwd4 />} /> */}
         <Route path='/create-account' element={<Createaccount />} />
         <Route path='/write' element={<Writeablog />} />
+        <Route path='/my-account' element={<Myaccount />} />
+        <Route path='/my-account/update-account' element={<Updateaccount />} />
       </Routes>
     </div>
   );
