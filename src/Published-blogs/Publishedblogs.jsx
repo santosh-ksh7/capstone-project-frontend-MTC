@@ -1,0 +1,105 @@
+import "./Publishedblogs.css";
+import { Rightchild1 } from "../my-account/Myaccount";
+import { Homerightchild3 } from "../home/Home";
+import { Nav } from '../nav/Nav.jsx';
+import { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+
+
+const base_url = "http://localhost:5000"
+
+export function Publishedblogs() {
+
+    const[blogsofuser, setBlogsofuser] = useState(null);
+
+    useEffect(()=>{
+        if(localStorage.getItem("_id")){
+            fetch(`${base_url}/sign/get-all-blogs/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>setBlogsofuser(data))
+        }
+    }, [])
+
+  return (
+    <div>
+        <Nav />
+        <div className="pubparent">
+            <div className="publeftchild">
+                <h2 style={{textAlign: "center"}}>My Published Blogs</h2>
+                {blogsofuser ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : "Loading..."}
+            </div>
+            <div className="pubri8child">
+                <Rightchild1 />
+                <hr />
+                <Homerightchild3 />
+            </div>
+        </div>
+    </div>
+  )
+}
+
+
+
+
+export function Blogsbyuser({obj, setBlogsofuser}) {
+
+    const navigate = useNavigate();
+
+    let short_des = obj.story;
+    short_des = short_des.slice(0,10)
+
+    return(
+        <div className='parenttonormal'>
+            <div className="normalcomponent">
+                <div className="normalcomponentleftchild">
+                    <div className="topcol">
+                        <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
+                        <p className='authorname'>{obj.user_info.name}</p>
+                        <p style={{display:"flex", alignItems: "center"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                    </div>
+                    <div className="midcol">
+                        {/* Update the navigate link as you proceed */}
+                        <h3 onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{obj.title}</h3>
+                        <p onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{short_des}.....</p>
+                    </div>
+                    <div className="botcol">
+                        <p style={{display:"flex", alignItems: "center"}}><i class="fa-solid fa-tags" />  {obj.tag}</p>
+                        <p style={{display:"flex", alignItems: "center"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
+                        {/* <p style={{display:"flex", alignItems: "center"}}><BookmarkAddOutlinedIcon /> save post </p> */}
+                    </div>
+                    <div className="editdelcol">
+                        <Button 
+                            // Redirect to edit page
+                            onClick={()=>navigate(`/my-account/edit-a-blog/${obj._id}`)}
+                            variant="outlined" 
+                            startIcon={<EditIcon />}>
+                            Edit
+                        </Button>
+                        {/* on click makes a fetch call to the API & deletes it. The same API also returns the updated all blogs from the users after deleting it. The updated blogs array is again set using setState method to re-render the updated list locally. */}
+                        {/* When a blog is delted the blog should be deleted from liked collection, saved collection, comments collection & finally blogs collection. */}
+                        <Button 
+                            onClick={()=>{
+                                alert("Are you sure you want to delete yout published blogs.");
+                                fetch(`${base_url}/sign/delete-a-post/${obj._id}`).then((data)=>data.json()).then((data)=>{
+                                    alert(data.msg);
+                                    setBlogsofuser(data.updateddata);
+                                });
+                            }}
+                            variant="outlined" 
+                            startIcon={<DeleteIcon />}>
+                            Delete
+                        </Button>
+                    </div>
+                </div>
+                <div className="normalcomponentrightchild">
+                    <img className='contentimage' src={obj.blog_pic} alt={obj.title} />
+                </div>
+            </div>
+            <hr />
+        </div>
+    )
+}

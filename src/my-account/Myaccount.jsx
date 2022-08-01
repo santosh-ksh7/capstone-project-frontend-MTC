@@ -77,9 +77,9 @@ export function Rightchild1() {
         <h2>Quick Links</h2>
         <div className="ri8chld1">
             <Link style={{textDecoration: "none"}} to="/my-account/update-account">Update account info</Link>
-            <Link style={{textDecoration: "none"}} to="">My published blogs</Link>
-            <Link style={{textDecoration: "none"}} to="">My liked blogs</Link>
-            <Link style={{textDecoration: "none"}} to="">My saved blogs</Link>
+            <Link style={{textDecoration: "none"}} to="/my-account/published-blogs">My published blogs</Link>
+            <Link style={{textDecoration: "none"}} to="/my-account/liked-blogs">My liked blogs</Link>
+            <Link style={{textDecoration: "none"}} to="/my-account/saved-blogs">My saved blogs</Link>
             <Link style={{textDecoration: "none"}} to="">Update password</Link>
             <Link style={{textDecoration: "none"}} to="">Delete account</Link>
             <Link style={{textDecoration: "none"}} to="">Sign-out</Link>

@@ -10,7 +10,11 @@ import { Createaccount } from './create-account/Createaccount';
 import { Login } from './login/Login';
 import { Landingpage } from './Landing-page/Landingpage';
 import { Myaccount } from './my-account/Myaccount';
+import { Publishedblogs } from './Published-blogs/Publishedblogs';
 import { Updateaccount } from './update-account/Updateaccount';
+import { Editablog } from './edit-a-blog/Editablog';
+import { Savedpost } from './saved-post/Savedpost';
+import { Likedpost } from './liked-post/Likedpost';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -32,6 +36,10 @@ function App() {
         <Route path='/write' element={<Writeablog />} />
         <Route path='/my-account' element={<Myaccount />} />
         <Route path='/my-account/update-account' element={<Updateaccount />} />
+        <Route path='/my-account/published-blogs' element={<Publishedblogs />} />
+        <Route path='/my-account/edit-a-blog/:id' element={<Editablog />} />
+        <Route path='/my-account/saved-blogs' element={<Savedpost />} />
+        <Route path='/my-account/liked-blogs' element={<Likedpost />} />
       </Routes>
     </div>
   );
