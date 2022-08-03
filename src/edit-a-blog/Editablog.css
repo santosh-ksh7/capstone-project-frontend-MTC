@@ -36,6 +36,7 @@
 .formwrite{
     display: flex;
     flex-direction: column;
+    margin: 50px;
 }
 
 
@@ -64,8 +65,8 @@
     right: 150px;
 }
 
-.resbtn{
-    width: 60px;
+.canbtn{
+    width: 70px;
     padding: 10px;
     background-color: red;
     color: white;

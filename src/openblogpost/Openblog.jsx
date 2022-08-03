@@ -9,7 +9,6 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
-import Button from '@mui/material/Button'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -29,7 +28,7 @@ export function Openblog() {
 
   const {id} = useParams();
 
-  const user_uid = "62ddd684103fbc2cfb7c09a3"     // instead of hardcoding the data use local storage info of logged in user
+  const user_uid = localStorage.getItem("_id")     // changed from hardcoding the data to using local storage info of logged in user
 
   const[specific_blog, setSpecific_blog] = useState(null);
   const[comments, setComments] = useState(null);
@@ -40,34 +39,34 @@ export function Openblog() {
   const[morefromauthor, setMorefromauthor] = useState([]);        // more from author data on mount
 
   useEffect(() => {
-    // using req.params in the backend 
-    fetch(`${base_url}/open-a-blog/${id}`).then((data)=>data.json()).then((data)=>{setSpecific_blog(data); console.log(data);});
-    fetch(`${base_url}/comments/${id}`).then((data)=>data.json()).then((data)=>{setComments(data); console.log(data);});
-    // the user ObjectId params to backend should be passed from the localstorage only if the user is logged in
-    // as of now i have passed the static data of users ObjectId
-    fetch(`${base_url}/individual-user-info/${user_uid}`).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data); console.log(data);});
+    // using req.params in the backend. Get blog info based on it's id
+    fetch(`${base_url}/open-a-blog/${id}`).then((data)=>data.json()).then((data)=>{setSpecific_blog(data)});
+    // get all comments relatted to this specific blog
+    fetch(`${base_url}/comments/${id}`).then((data)=>data.json()).then((data)=>{setComments(data)});
+    // the user ObjectId params to backend should be passed from the localstorage only if the user is logged in. This data is required by the comments component to show profile image & name of the user
+    fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data)});
     // fetch call to render the like icon accordingly when the component first mounts
-    let data2send= {"blog_id": id,"author_id": user_uid}
+    let data2send= {"blog_id": id,"author_id": localStorage.getItem("_id")}
     fetch(`${base_url}/get-like-info`, {
       method: "POST",
       body : JSON.stringify(data2send),
       headers: {
         "content-type": "application/json"
       }
-    }).then((data)=>data.json()).then((data)=>{setLikeonmount(data.msg);console.log(likeonmount,data);})
+    }).then((data)=>data.json()).then((data)=>{setLikeonmount(data.msg)})
     // fetch call to render the bookmark icon accordingly when the component first mounts
-    let data2send1= {"blog_id": id,"author_id": user_uid}
+    let data2send1= {"blog_id": id,"author_id": localStorage.getItem("_id")}
     fetch(`${base_url}/get-bookmark-info`, {
       method: "POST",
       body : JSON.stringify(data2send1),
       headers: {
         "content-type": "application/json"
       }
-    }).then((data)=>data.json()).then((data)=>{setBookmarkonmount(data.msg);console.log(bookmarkonmount,data);})
+    }).then((data)=>data.json()).then((data)=>{setBookmarkonmount(data.msg)})
     // fetch call for keepreading data i.e.. the bottom-most component & return any 2 blogs & sotre it in keepreadingdata variable from useSate
     fetch(`${base_url}/keep-reading`).then((data)=>data.json()).then((data)=>setKeepreadingdata(data))
     // fetch call for morefromauthor data i.e.. the right-most component & return any 2 blogs & sotre it in morefromauthor variable from useSate
-    fetch(`${base_url}/more-from-author/${id}`).then((data)=>data.json()).then((data)=>{setMorefromauthor(data); console.log("identifier",data);})
+    fetch(`${base_url}/more-from-author/${id}`).then((data)=>data.json()).then((data)=>{setMorefromauthor(data)})
   }, [id])
   
 
@@ -97,10 +96,10 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
     <div style={{display: "flex"}}>
         <div className="indi_blog leftchild">
             <div className="toprow">
-                    <p style={{display:"flex", alignItems: "center"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
-                    <p style={{display:"flex", alignItems: "center"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
-                    <p style={{display:"flex", alignItems: "center"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
-                    <p style={{display:"flex", alignItems: "center"}}><i class="fa-solid fa-tags" />  {obj.tag}</p>
+                    <p style={{display:"flex", alignItems: "center", gap: "8px", color: "black"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
+                    <p style={{display:"flex", alignItems: "center", gap: "8px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                    <p style={{display:"flex", alignItems: "center", gap: "8px"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
+                    <p style={{display:"flex", alignItems: "center", gap: "8px"}}><i className="fa-solid fa-tags" />  {obj.tag}</p>
             </div>
             <hr />
             <div className="midrow">
@@ -125,7 +124,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                           }
                         }).then(()=>console.log(data2send))
                         // fetch call to remove record to liked_posts collection     --- backend returns nothing
-                        const data2remove = {blog_id: blog_id ,author_id: author_id}
+                        const data2remove = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
                         fetch(`${base_url}/alter-liked_posts/remove`, {
                           method: "POST",
                           body: JSON.stringify(data2remove),
@@ -135,7 +134,10 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                         }).then(()=>console.log("data2remove", data2remove))
                       }}
                     >
-                        <ThumbDownIcon />
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                          <ThumbDownIcon style={{color: "black", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "14px", color: "black"}}>Unlike</p>
+                        </div>
                     </IconButton>
                     :
                     <IconButton 
@@ -152,7 +154,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                           }
                         }).then(()=>console.log(data2send))
                         // fetch call to add record to liked_posts collection     --- backend returns nothing
-                        const data2put = {blog_id: blog_id ,author_id: author_id}
+                        const data2put = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
                         fetch(`${base_url}/alter-liked_posts/add`, {
                           method: "POST",
                           body: JSON.stringify(data2put),
@@ -162,7 +164,10 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                         }).then(()=>console.log("data2put", data2put))
                       }}
                     >
-                        <ThumbUpIcon />
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                          <ThumbUpIcon style={{color: "blue", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Like</p>
+                        </div>
                     </IconButton>}
                     {count}
                 </p>
@@ -172,7 +177,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                       onClick={()=>{
                         setBookmarkonmount(!bookmarkonmount);
                         // fetch call to remove record from saved_posts collection
-                        const data2remove_book = {blog_id: blog_id, author_id: author_id}
+                        const data2remove_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
                         fetch(`${base_url}/alter-saved_posts/remove`, {
                           method: "POST",
                           body: JSON.stringify(data2remove_book),
@@ -182,14 +187,17 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                         }).then(()=>console.log(data2remove_book))
                       }}
                     >
-                        <BookmarkRemoveIcon />
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                          <BookmarkRemoveIcon style={{color: "#958c3a", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Removed from saved post</p>
+                        </div>
                     </IconButton>
                     :
                     <IconButton 
                       onClick={()=>{
                         setBookmarkonmount(!bookmarkonmount);
                         // fetch call to add record to saved_posts collection
-                        const data2add_book = {blog_id: blog_id, author_id: author_id}
+                        const data2add_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
                         fetch(`${base_url}/alter-saved_posts/add`, {
                           method: "POST",
                           body: JSON.stringify(data2add_book),
@@ -199,18 +207,27 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                         }).then(()=>console.log(data2add_book))
                       }}
                     >
-                        <BookmarkAddIcon />
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                          <BookmarkAddIcon style={{color: "green", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Add to saved post</p>
+                        </div>
                     </IconButton>}
                 </p>
                 <p>
                     {trackcomment ?
-                    <Button onClick={()=>setTrackcomment(!trackcomment)} variant="outlined" startIcon={<CommentsDisabledIcon />}>
-                    Hide Comments
-                    </Button>
+                    <IconButton onClick={()=>setTrackcomment(!trackcomment)} > 
+                      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                        <CommentsDisabledIcon style={{color: "black", fontSize: "30px"}} />
+                        <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Hide comments</p>
+                      </div>
+                    </IconButton>
                     :
-                    <Button onClick={()=>setTrackcomment(!trackcomment)} variant="outlined" startIcon={<InsertCommentIcon />}>
-                        Show Comments
-                    </Button>}
+                    <IconButton onClick={()=>setTrackcomment(!trackcomment)}> 
+                      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
+                        <InsertCommentIcon style={{color: "green", fontSize: "30px"}} />
+                        <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Show comments</p>
+                      </div>
+                    </IconButton>}
                 </p>
             </div>
             <div className="commentrow">
@@ -219,8 +236,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
             <hr />
             <div className="keepreadingrow">
                 {/* make the fetch call to DB to display any 3 blogs randomly. Go for different design just to show the versatility */}
-                <h3>Keep reading</h3>
-                <p style={{textAlign: "left"}}>More from MyTravelComapanion</p>
+                <h2>Keep exploring more from MyTravelCompanion</h2>
                 {keepreadingdata ? keepreadingdata.map((ele,index) => <Blogs obj={ele} key={index} />) : "Loading...."}
                 <Link  style={{marginLeft: "50%", textDecoration: "none", color: "black"}} to="/home">View more</Link>
             </div>
@@ -254,15 +270,15 @@ export function About({obj}) {
             </div>
         </div>
         <div className="aboutsocialhandles">
-            <a href={obj.user_info.fb_link} target="_blank">
+            {obj.user_info.fb_link !=="" ? <a rel="noreferrer" href={obj.user_info.fb_link} target="_blank">
                 <FacebookIcon />
-            </a>
-            <a href={obj.user_info.twitter_link} target="_blank">
+            </a> : null}
+            {obj.user_info.twitter_link!=="" ? <a rel="noreferrer" href={obj.user_info.twitter_link} target="_blank">
                 <TwitterIcon />
-            </a>
-            <a href={obj.user_info.insta_link} target="_blank">
+            </a> : null}
+            {obj.user_info.insta_link!== "" ? <a rel="noreferrer" href={obj.user_info.insta_link} target="_blank">
                 <InstagramIcon />
-            </a>
+            </a> : null}
         </div>
         
     </div>
@@ -277,9 +293,11 @@ export function Morefromauthor({morefromauthor}){
         <div>
             <h3>More from the author</h3>
             {/* Any 2 different blogs other than currently opened blogs by author & loop it out calling Morefromauthorindividual  */}
-            {morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />)}
+            {morefromauthor[0] ? morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />) : "No more blogs by author"}
             {/* Link it to author specific page */}
-            <Link to="" style={{marginLeft: "40%", textDecoration: "none", color: "black"}}>view more</Link>
+            <div style={{marginTop: "15px"}}>
+              <Link to="" style={{marginLeft: "33%", textDecoration: "none"}}>view all about user</Link>
+            </div>
         </div>
     )
 }
@@ -303,8 +321,6 @@ export function Morefromauthorindividual({obj}){
 // Comments parent
 export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
 
-    const[commentslength, setCommentslength] = useState(comments.length)
-
     const commentform = yup.object({
         actual_comment: yup.string().required()
     })
@@ -313,7 +329,7 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
         initialValues : {actual_comment: ""},
         validationSchema: commentform,
         onSubmit: (values) => {
-            let data_to_put = {...values, blog_id: obj._id, author_id: logged_userinfo._id };
+            let data_to_put = {...values, blog_id: obj._id, author_id: localStorage.getItem("_id") };
             console.log(data_to_put);
             fetch(`${base_url}/post-comment`, {
               method: "POST",
@@ -321,13 +337,13 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
               headers: {
                 "content-type" : "application/json"
               }
-            }).then((data) => data.json()).then((data) => {setComments(data);})
+            }).then((data) => data.json()).then((data) => {setComments(data); formik.resetForm()})
         }
     })
 
   return (
-    <div style={{backgroundColor: "grey", padding: "10px"}}>
-        <h3>Comments  ({commentslength})</h3>
+    <div style={{backgroundColor: "#958c3a", padding: "10px"}}>
+        <h3>Comments  ({comments.length})</h3>
         <p style={{textAlign: "left"}}>Comment down your thoughts</p>
         <form onSubmit={formik.handleSubmit} style={{display: "flex", alignItems: "center", gap: "5px",marginBottom: "13px"}}>
             {/* Update / fetch the image and name using the localstorage data & create the object using formik by adding the profile pic link & name   orrrrrr  else just give user_id if you figured it out */}
@@ -339,7 +355,7 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur} 
                     type="text" 
-                    value={formik.values.comment}
+                    value={formik.values.actual_comment}
                     placeholder="Your comment here......" 
                     size={90}
                 />
@@ -347,7 +363,7 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
             </div>
             <button style={{padding: "10px"}} type="submit">Post</button>
         </form>
-        {comments.map((ele,index)=> <Comments obj={ele} key={index} /> )}
+        {comments[0] ? comments.map((ele,index)=> <Comments obj={ele} key={index} />) : "No comments yet"}
     </div>
   )
 }

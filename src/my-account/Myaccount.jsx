@@ -7,6 +7,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
+import{useNavigate} from "react-router-dom"
 
 
 
@@ -34,6 +35,8 @@ export function Myaccount() {
         <Nav />
         <div style={{display: "flex"}}>
             <div className="leftchild">
+                <h2 style={{textAlign: "center"}}>Account Info</h2>
+                <hr />
                 {userdata ? <Leftchild1 obj={userdata} /> : "Loading..."}
             </div>
             <div className="rightchild">
@@ -51,7 +54,6 @@ export function Leftchild1({obj}){
     return(
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
             <div className="leftpart">
-                <h2>Account Info</h2>
                 <p style={{textAlign: "left", display: "flex", alignItems: "center", gap: "5px"}}><strong>Name: </strong>{obj.name}</p>
                 {/* conditional rendering only if users have given About/bio */}
                 {obj.about!== "" ? <p style={{textAlign: "left", display: "flex", alignItems: "flex-start", gap: "5px"}}><strong>About: </strong>{obj.about}</p> : null}
@@ -72,17 +74,35 @@ export function Leftchild1({obj}){
 
 
 export function Rightchild1() {
+
+    const navigate = useNavigate();
+
   return (
     <div style={{textAlign: "center", marginBottom: "15px"}}>
         <h2>Quick Links</h2>
         <div className="ri8chld1">
+            <Link style={{textDecoration: "none"}} to="/my-account">My account info</Link>
             <Link style={{textDecoration: "none"}} to="/my-account/update-account">Update account info</Link>
             <Link style={{textDecoration: "none"}} to="/my-account/published-blogs">My published blogs</Link>
             <Link style={{textDecoration: "none"}} to="/my-account/liked-blogs">My liked blogs</Link>
             <Link style={{textDecoration: "none"}} to="/my-account/saved-blogs">My saved blogs</Link>
-            <Link style={{textDecoration: "none"}} to="">Update password</Link>
-            <Link style={{textDecoration: "none"}} to="">Delete account</Link>
-            <Link style={{textDecoration: "none"}} to="">Sign-out</Link>
+            <div style={{display: "flex", justifyContent: "space-between", marginTop: "15px", marginBottom: "15px"}}>
+                <button 
+                    style={{cursor: "pointer", color: "white", backgroundColor: "blue", borderRadius: "10px", padding: "5px"}}
+                    onClick={()=> {navigate("");}}>
+                    Update password
+                </button>
+                <button
+                    style={{cursor: "pointer", color: "white", backgroundColor: "green", borderRadius: "10px", padding: "5px"}} 
+                    onClick={()=> {navigate("");}}>
+                    Sign-out
+                </button>
+                <button 
+                    style={{cursor: "pointer", color: "white", backgroundColor: "red", borderRadius: "10px", padding: "5px"}}
+                    onClick={()=> {navigate("");}}>
+                    Delete account
+                </button>
+            </div>
         </div>
     </div>
   )

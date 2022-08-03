@@ -28,7 +28,6 @@ export function Editablog() {
   return (
     <div>
         <Nav />
-        <h4 style={{textAlign: "center", marginBottom: "0px", marginTop: "10px"}}>Share with the community & Continue to inspire with more amazing tales....</h4>
         {blogdata ? <Editcomponent obj={blogdata} /> : "Loading....."}
     </div>
   )
@@ -178,6 +177,7 @@ export function Editcomponent({obj}) {
             />
             {formik.touched.tag && formik.errors.tag ? <p style={{color: "red", textAlign: "left"}}>{formik.errors.tag}</p> : null}
             <button className="subbtn" type="submit">Save Changes</button>
+            <button className="canbtn" onClick={()=>navigate("/my-account/published-blogs")}>Cancel</button>
         </form>
     </div>
   )

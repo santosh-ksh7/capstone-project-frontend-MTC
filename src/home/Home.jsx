@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
 import { Nav } from '../nav/Nav.jsx';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-// import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useFormik } from 'formik';
 
@@ -34,12 +33,11 @@ export function Home() {
             <div className="homeleftchild">
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                     <div>
-                        {adventure ? <h2>Showing results for adventure</h2> : null}
-                        {hill_station ? <h2>Showing results for hill station</h2> : null}
-                        {mountain ? <h2 >Showing results for mountain</h2> : null}
-                        {search ? <h2>Showing search results</h2> : null}
-                        {normalheading ? <h2>Explore Blogs</h2> : null}
-                        {normalheading ? <p>Discover from the community</p> : null}
+                        {adventure ? <h3>Showing results for adventure</h3> : null}
+                        {hill_station ? <h3>Showing results for hill station</h3> : null}
+                        {mountain ? <h3 >Showing results for mountain</h3> : null}
+                        {search ? <h3>Showing search results</h3> : null}
+                        {normalheading ? <h3>Explore Blogs from the community</h3> : null}
                     </div>
                     {/* solve it later --- reset button visisbilty to fall back to initial conditions */}
                     {/* <div>
@@ -57,7 +55,7 @@ export function Home() {
                 <hr />
                 {blogs ? blogs.map((ele)=> <Blogs obj={ele} key={ele._id} />) : "Loading.."}
             </div>
-            <div className="homerightchild" style={{width: "350px", marginTop:"90px", borderLeft: "1px dotted grey"}}>
+            <div className="homerightchild" style={{width: "350px", marginTop:"50px", borderLeft: "1px dotted grey"}}>
                 <Homerightchild1 setBlogs={setBlogs} setSearch={setSearch} setMountain={setMountain} setHill_station={setHill_station} setAdventure={setAdventure} setNormalheading={setNormalheading} />
                 <hr />
                 <Homerightchild2 setBlogs={setBlogs} setSearch={setSearch} setMountain={setMountain} setHill_station={setHill_station} setAdventure={setAdventure} setNormalheading={setNormalheading} />
@@ -103,9 +101,10 @@ export function Homerightchild1({setBlogs, setMountain, setHill_station, setAdve
 
       <div>
         <h3>Search by Title</h3>
-          <form onSubmit={formik.handleSubmit}>
-              <input style={{borderRadius: "10px", padding: "5px"}} placeholder="search here" name='search' onChange={formik.handleChange} type="text" />
-              <button style={{borderRadius: "10px", padding: "5px"}} type='submit'>Search</button>
+          <form onSubmit={formik.handleSubmit} style={{display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap"}}>
+              <input style={{borderRadius: "10px", padding: "8px"}} placeholder="search here" name='search' onChange={formik.handleChange} type="text" value={formik.values.search} size="35" />
+              <button style={{borderRadius: "10px", padding: "8px", cursor: "pointer", backgroundColor: "green", color: "white"}} type='submit'>Search</button>
+              <button style={{borderRadius: "10px", padding: "8px", cursor: "pointer", backgroundColor: "#958c3a", color: "white"}} type='submit' onClick={formik.resetForm}>Reset results</button>
           </form>
       </div>
     )
@@ -117,8 +116,8 @@ export function Homerightchild2({setBlogs, setMountain, setHill_station, setAdve
 
   return (
     <div>
-        <h3 style={{display:"flex", alignItems: "center",  marginTop: "30px"}}>Discover by tags <i class="fa-solid fa-tags" /></h3>
-        <p>Explore more of what matters to you</p>
+        <h3 style={{display:"flex", alignItems: "center",  marginTop: "30px", gap: "8px"}}>Discover by tags <i className="fa-solid fa-tags" /></h3>
+        <p style={{textAlign: "left"}}>Explore more of what matters to you</p>
         <div className="tagcontainer">
             <button onClick={()=> {
                 fetch(`${base_url}/tag?tag=mountain`).then((data)=>data.json()).then((data)=> {setBlogs(data); 
@@ -157,9 +156,9 @@ export function Homerightchild3() {
     // update the to attribute to point to right direction
   return (
     <div style={{display:"flex", justifyContent: "space-between", marginTop: "30px"}}>
-        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="">About</Link>
-        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="">Reach to us</Link>
-        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="">Social media handles</Link>
+        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="/">About</Link>
+        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="/">Reach to us</Link>
+        <Link style={{textDecoration: "none", color: "grey", fontSize: "14px"}} to="/">Social media handles</Link>
     </div>
   )
 }
@@ -179,19 +178,18 @@ export function Blogs({obj}) {
             <div className="normalcomponent">
                 <div className="normalcomponentleftchild">
                     <div className="topcol">
-                        <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
-                        <p className='authorname'>{obj.user_info.name}</p>
-                        <p style={{display:"flex", alignItems: "center"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                        <div style={{display: "flex", gap: "8px", alignItems: "center"}}>
+                            <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
+                            <p style={{margin: "0px"}} className='authorname'>{obj.user_info.name}</p>
+                        </div>
+                        <p style={{display:"flex", alignItems: "center", gap: "8px",margin: "0px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                        <p style={{display:"flex", alignItems: "center", gap: "8px", margin: "0px"}} className='date'><i className="fa-solid fa-tags" />  {obj.tag}</p>
+                        <p style={{display:"flex", alignItems: "center", gap: "8px", margin: "0px"}} className='date'><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
                     </div>
                     <div className="midcol">
                         {/* Update the navigate link as you proceed */}
-                        <h3 onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{obj.title}</h3>
+                        <h3 style={{marginTop: "15px"}} onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{obj.title}</h3>
                         <p onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{short_des}.....</p>
-                    </div>
-                    <div className="botcol">
-                        <p style={{display:"flex", alignItems: "center"}}><i class="fa-solid fa-tags" />  {obj.tag}</p>
-                        <p style={{display:"flex", alignItems: "center"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
-                        {/* <p style={{display:"flex", alignItems: "center"}}><BookmarkAddOutlinedIcon /> save post </p> */}
                     </div>
                 </div>
                 <div className="normalcomponentrightchild">

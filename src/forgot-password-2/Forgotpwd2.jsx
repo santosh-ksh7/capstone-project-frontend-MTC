@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import InputAdornment from '@mui/material/InputAdornment';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import KeyIcon from '@mui/icons-material/Key';
@@ -79,6 +78,9 @@ export function Forgotpwd2() {
                 <button style={{marginTop: "10px", marginLeft: "35%", cursor: "pointer"}} type="submit">Validate OTP</button>
             </form>
             <p style={{color: "grey"}}>----------or---------</p>
+            <p>
+                <Link style={{fontSize: "15px", textDecoration: "none"}} to="/forgot-password-1">Didn't recieve OTP? Get OTP again.</Link>
+            </p>
             <p>
                 <Link style={{fontSize: "15px", textDecoration: "none"}} to="/login">Back to Sign-in</Link>
             </p>

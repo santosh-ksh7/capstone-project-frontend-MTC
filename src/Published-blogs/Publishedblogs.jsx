@@ -30,6 +30,7 @@ export function Publishedblogs() {
         <div className="pubparent">
             <div className="publeftchild">
                 <h2 style={{textAlign: "center"}}>My Published Blogs</h2>
+                <hr />
                 {blogsofuser ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : "Loading..."}
             </div>
             <div className="pubri8child">
@@ -57,19 +58,18 @@ export function Blogsbyuser({obj, setBlogsofuser}) {
             <div className="normalcomponent">
                 <div className="normalcomponentleftchild">
                     <div className="topcol">
-                        <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
-                        <p className='authorname'>{obj.user_info.name}</p>
-                        <p style={{display:"flex", alignItems: "center"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                        <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                            <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
+                            <p className='authorname'>{obj.user_info.name}</p>
+                        </div>
+                        <p style={{display:"flex", alignItems: "center", gap : "8px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
+                        <p style={{display:"flex", alignItems: "center", gap : "8px", color : "grey"}}><i className="fa-solid fa-tags" />  {obj.tag}</p>
+                        <p style={{display:"flex", alignItems: "center", gap : "8px", color : "grey"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
                     </div>
                     <div className="midcol">
                         {/* Update the navigate link as you proceed */}
                         <h3 onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{obj.title}</h3>
                         <p onClick={()=> navigate(`/open-a-blog/${obj._id}`)}>{short_des}.....</p>
-                    </div>
-                    <div className="botcol">
-                        <p style={{display:"flex", alignItems: "center"}}><i class="fa-solid fa-tags" />  {obj.tag}</p>
-                        <p style={{display:"flex", alignItems: "center"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
-                        {/* <p style={{display:"flex", alignItems: "center"}}><BookmarkAddOutlinedIcon /> save post </p> */}
                     </div>
                     <div className="editdelcol">
                         <Button 

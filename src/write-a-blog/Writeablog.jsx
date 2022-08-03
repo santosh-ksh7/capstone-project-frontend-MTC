@@ -17,7 +17,6 @@ export function Writeablog() {
   return (
     <div>
         <Nav />
-        <h4 style={{textAlign: "center", marginBottom: "0px", marginTop: "10px"}}>Share with the community & Continue to inspire with more amazing tales....</h4>
             <div className="leftchild">
                 <Writesubcomponent />
             </div>
@@ -79,12 +78,11 @@ export function Writesubcomponent() {
                 fetch(`https://api.cloudinary.com/v1_1/dz7pcmtxi/image/upload`, {
                     method: "POST",
                     body: img2upload,
-                }).then((data)=>data.json()).then((data)=>{
-                    // Also need to send the logged user author_id : ObjectId stored in the local storage. As of now i am sending the hardcoded/static data 
+                }).then((data)=>data.json()).then((data)=>{ 
                     const data2putindb = {
                         ...values,
                         blog_pic: data.secure_url,
-                        author_id: "62ddd684103fbc2cfb7c09a3"
+                        author_id: localStorage.getItem("_id")
                     };
                     console.log(data2putindb);
                     fetch(`${base_url}/write-a-blog/upload-blog`, {

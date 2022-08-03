@@ -149,6 +149,7 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
   return (
     <div>
         <h2 style={{textAlign: "center"}}>Update Account Info</h2>
+        <hr />
         <div style={{display: "flex", justifyContent: "space-between"}}>
             <div className="leftchildupdate">
                 {/* update account info form */}
