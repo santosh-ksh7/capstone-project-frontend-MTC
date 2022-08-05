@@ -4,7 +4,6 @@ import {Openblog} from "./openblogpost/Openblog"
 import { Forgotpwd1 } from './forgot-password-1/Forgotpwd1';
 import { Forgotpwd2 } from './forgot-password-2/Forgotpwd2';
 import { Forgotpwd3 } from './forgot-password-3/Forgotpwd3';
-// import { Forgotpwd4 } from './forgot-password-4/Forgotpwd4';
 import { Writeablog } from './write-a-blog/Writeablog';
 import { Createaccount } from './create-account/Createaccount';
 import { Login } from './login/Login';
@@ -15,6 +14,7 @@ import { Updateaccount } from './update-account/Updateaccount';
 import { Editablog } from './edit-a-blog/Editablog';
 import { Savedpost } from './saved-post/Savedpost';
 import { Likedpost } from './liked-post/Likedpost';
+import { Authorspecific } from './author-specific/Authorspecific';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -31,7 +31,6 @@ function App() {
         <Route path='/forgot-password-1' element={<Forgotpwd1 />} />
         <Route path='/forgot-password-2' element={<Forgotpwd2 />} />
         <Route path='/forgot-password-3' element={<Forgotpwd3 />} />
-        {/* <Route path='/forgot-password-4' element={<Forgotpwd4 />} /> */}
         <Route path='/create-account' element={<Createaccount />} />
         <Route path='/write' element={<Writeablog />} />
         <Route path='/my-account' element={<Myaccount />} />
@@ -40,6 +39,7 @@ function App() {
         <Route path='/my-account/edit-a-blog/:id' element={<Editablog />} />
         <Route path='/my-account/saved-blogs' element={<Savedpost />} />
         <Route path='/my-account/liked-blogs' element={<Likedpost />} />
+        <Route path='/author-specific/:id' element={<Authorspecific />} />
       </Routes>
     </div>
   );

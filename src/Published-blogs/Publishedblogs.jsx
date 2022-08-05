@@ -9,6 +9,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Ifnotloggedin } from "../if-not-logged-in/Ifnotloggedin";
 
 
 
@@ -26,19 +27,21 @@ export function Publishedblogs() {
 
   return (
     <div>
-        <Nav />
-        <div className="pubparent">
-            <div className="publeftchild">
-                <h2 style={{textAlign: "center"}}>My Published Blogs</h2>
-                <hr />
-                {blogsofuser ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : "Loading..."}
+        {localStorage.getItem("_id") ? <div>
+            <Nav />
+            <div className="pubparent">
+                <div className="publeftchild">
+                    <h2 style={{textAlign: "center"}}>My Published Blogs</h2>
+                    <hr />
+                    {blogsofuser ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : "Loading..."}
+                </div>
+                <div className="pubri8child">
+                    <Rightchild1 />
+                    <hr />
+                    <Homerightchild3 />
+                </div>
             </div>
-            <div className="pubri8child">
-                <Rightchild1 />
-                <hr />
-                <Homerightchild3 />
-            </div>
-        </div>
+        </div> : <Ifnotloggedin />}
     </div>
   )
 }
@@ -58,7 +61,7 @@ export function Blogsbyuser({obj, setBlogsofuser}) {
             <div className="normalcomponent">
                 <div className="normalcomponentleftchild">
                     <div className="topcol">
-                        <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                        <div onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display: "flex", alignItems: "center", gap: "8px", cursor: "pointer"}}>
                             <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
                             <p className='authorname'>{obj.user_info.name}</p>
                         </div>

@@ -15,7 +15,7 @@
 }
 
 .imgup{
-    width: 175px;
+    width: 220px;
     height: 200px;
     object-fit: cover;
 }
@@ -30,16 +30,37 @@
 }
 
 .rmpp{
-    width: 150px;
+    width: 100px;
     cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+}
+
+.mcsc{
+    background-color: green;
+    width: 140px;
+    border-radius: 10px;
+    color: white;
+    padding: 7px;
+    cursor: pointer;
+    position: fixed;
+    left: 740px;
+    bottom: 40px;
 }
 
 .setnew{
-    width: 150px;
-    padding: 3px;
+    font-size: 14px;
+    width: 100px;
+    padding: 5px;
     cursor: pointer;
-    border: 1px solid grey;
-    background-color: grey;
+    background-color: #958c3a;
+    border-radius: 10px;
+    color: white;
+    margin: 0px;
+    border: 1px solid black;
 }
 
 .upaccountinfo{

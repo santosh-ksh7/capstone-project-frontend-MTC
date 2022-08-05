@@ -20,6 +20,15 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+// daialog box
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+
 
 
 const base_url = "http://localhost:5000"
@@ -43,28 +52,31 @@ export function Openblog() {
     fetch(`${base_url}/open-a-blog/${id}`).then((data)=>data.json()).then((data)=>{setSpecific_blog(data)});
     // get all comments relatted to this specific blog
     fetch(`${base_url}/comments/${id}`).then((data)=>data.json()).then((data)=>{setComments(data)});
-    // the user ObjectId params to backend should be passed from the localstorage only if the user is logged in. This data is required by the comments component to show profile image & name of the user
-    fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data)});
-    // fetch call to render the like icon accordingly when the component first mounts
-    let data2send= {"blog_id": id,"author_id": localStorage.getItem("_id")}
-    fetch(`${base_url}/get-like-info`, {
-      method: "POST",
-      body : JSON.stringify(data2send),
-      headers: {
-        "content-type": "application/json"
-      }
-    }).then((data)=>data.json()).then((data)=>{setLikeonmount(data.msg)})
-    // fetch call to render the bookmark icon accordingly when the component first mounts
-    let data2send1= {"blog_id": id,"author_id": localStorage.getItem("_id")}
-    fetch(`${base_url}/get-bookmark-info`, {
-      method: "POST",
-      body : JSON.stringify(data2send1),
-      headers: {
-        "content-type": "application/json"
-      }
-    }).then((data)=>data.json()).then((data)=>{setBookmarkonmount(data.msg)})
+    // FOr like, bookmark & comments data to be as per user record, the user needs to be logged-in.
+    if(localStorage.getItem("_id")){
+      // the user ObjectId params to backend should be passed from the localstorage only if the user is logged in. This data is required by the comments component to show profile image & name of the user
+      fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data)});
+      // fetch call to render the like icon accordingly when the component first mounts
+      let data2send= {"blog_id": id,"author_id": localStorage.getItem("_id")}
+      fetch(`${base_url}/get-like-info`, {
+        method: "POST",
+        body : JSON.stringify(data2send),
+        headers: {
+          "content-type": "application/json"
+        }
+      }).then((data)=>data.json()).then((data)=>{setLikeonmount(data.msg)})
+      // fetch call to render the bookmark icon accordingly when the component first mounts
+      let data2send1= {"blog_id": id,"author_id": localStorage.getItem("_id")}
+      fetch(`${base_url}/get-bookmark-info`, {
+        method: "POST",
+        body : JSON.stringify(data2send1),
+        headers: {
+          "content-type": "application/json"
+        }
+      }).then((data)=>data.json()).then((data)=>{setBookmarkonmount(data.msg)})
+    }
     // fetch call for keepreading data i.e.. the bottom-most component & return any 2 blogs & sotre it in keepreadingdata variable from useSate
-    fetch(`${base_url}/keep-reading`).then((data)=>data.json()).then((data)=>setKeepreadingdata(data))
+    fetch(`${base_url}/get-any-4-random-blogs`).then((data)=>data.json()).then((data)=>setKeepreadingdata(data))
     // fetch call for morefromauthor data i.e.. the right-most component & return any 2 blogs & sotre it in morefromauthor variable from useSate
     fetch(`${base_url}/more-from-author/${id}`).then((data)=>data.json()).then((data)=>{setMorefromauthor(data)})
   }, [id])
@@ -84,10 +96,24 @@ export function Openblog() {
 
 // Blog component
 export function Blogcomponent({obj, comments, setComments, logged_userinfo, likeonmount, setLikeonmount, blog_id, author_id, bookmarkonmount, setBookmarkonmount, keepreadingdata, morefromauthor}) {
+
+    const navigate = useNavigate();
   
     const[count, setCount] = useState(obj.clap);
 
     const[trackcomment, setTrackcomment] = useState(false);                  // to show / hide comments
+
+    // dialog-box logic from material UI
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    // dialog-box logic from material UI
 
 
     
@@ -96,7 +122,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
     <div style={{display: "flex"}}>
         <div className="indi_blog leftchild">
             <div className="toprow">
-                    <p style={{display:"flex", alignItems: "center", gap: "8px", color: "black"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
+                    <p onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", color: "black", cursor: "pointer"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><i className="fa-solid fa-tags" />  {obj.tag}</p>
@@ -107,129 +133,178 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                 <img src={obj.blog_pic} alt={obj.title} />
                 <p style={{textAlign: "left"}}>{obj.story}</p>
             </div>
-            <div className="lastrow" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                <p>
-                    {likeonmount ?
-                    <IconButton 
-                      onClick={()=>{
-                        setLikeonmount(!likeonmount);
-                        setCount(count-1);
-                        // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
-                        const data2send= {clap : count-1}
-                        fetch(`${base_url}/alter-clap-count/${blog_id}`, {
-                          method: "POST",
-                          body: JSON.stringify(data2send),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log(data2send))
-                        // fetch call to remove record to liked_posts collection     --- backend returns nothing
-                        const data2remove = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
-                        fetch(`${base_url}/alter-liked_posts/remove`, {
-                          method: "POST",
-                          body: JSON.stringify(data2remove),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log("data2remove", data2remove))
-                      }}
-                    >
+            {/* Render this as per user logged - in status */}
+            {localStorage.getItem("_id") ? 
+              <div className="lastrow" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                  <p>
+                      {likeonmount ?
+                      <IconButton 
+                        onClick={()=>{
+                          setLikeonmount(!likeonmount);
+                          setCount(count-1);
+                          // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
+                          const data2send= {clap : count-1}
+                          fetch(`${base_url}/alter-clap-count/${blog_id}`, {
+                            method: "POST",
+                            body: JSON.stringify(data2send),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log(data2send))
+                          // fetch call to remove record to liked_posts collection     --- backend returns nothing
+                          const data2remove = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
+                          fetch(`${base_url}/alter-liked_posts/remove`, {
+                            method: "POST",
+                            body: JSON.stringify(data2remove),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log("data2remove", data2remove))
+                        }}
+                      >
+                          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                            <ThumbDownIcon style={{color: "black", fontSize: "30px"}} />
+                            <p style={{margin: "0px", fontSize: "14px", color: "black"}}>Unlike</p>
+                          </div>
+                      </IconButton>
+                      :
+                      <IconButton 
+                        onClick={()=>{
+                          setLikeonmount(!likeonmount);
+                          setCount(count+1);
+                          // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
+                          const data2send= {clap : count+1}
+                          fetch(`${base_url}/alter-clap-count/${blog_id}`, {
+                            method: "POST",
+                            body: JSON.stringify(data2send),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log(data2send))
+                          // fetch call to add record to liked_posts collection     --- backend returns nothing
+                          const data2put = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
+                          fetch(`${base_url}/alter-liked_posts/add`, {
+                            method: "POST",
+                            body: JSON.stringify(data2put),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log("data2put", data2put))
+                        }}
+                      >
+                          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                            <ThumbUpIcon style={{color: "blue", fontSize: "30px"}} />
+                            <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Like</p>
+                          </div>
+                      </IconButton>}
+                      {count}
+                  </p>
+                  <p>
+                      {bookmarkonmount ?
+                      <IconButton 
+                        onClick={()=>{
+                          setBookmarkonmount(!bookmarkonmount);
+                          // fetch call to remove record from saved_posts collection
+                          const data2remove_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
+                          fetch(`${base_url}/alter-saved_posts/remove`, {
+                            method: "POST",
+                            body: JSON.stringify(data2remove_book),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log(data2remove_book))
+                        }}
+                      >
+                          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                            <BookmarkRemoveIcon style={{color: "#958c3a", fontSize: "30px"}} />
+                            <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Removed from saved post</p>
+                          </div>
+                      </IconButton>
+                      :
+                      <IconButton 
+                        onClick={()=>{
+                          setBookmarkonmount(!bookmarkonmount);
+                          // fetch call to add record to saved_posts collection
+                          const data2add_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
+                          fetch(`${base_url}/alter-saved_posts/add`, {
+                            method: "POST",
+                            body: JSON.stringify(data2add_book),
+                            headers: {
+                              "content-type" : "application/json"
+                            }
+                          }).then(()=>console.log(data2add_book))
+                        }}
+                      >
+                          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                            <BookmarkAddIcon style={{color: "green", fontSize: "30px"}} />
+                            <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Add to saved post</p>
+                          </div>
+                      </IconButton>}
+                  </p>
+                  <p>
+                      {trackcomment ?
+                      <IconButton onClick={()=>setTrackcomment(!trackcomment)} > 
                         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                          <ThumbDownIcon style={{color: "black", fontSize: "30px"}} />
-                          <p style={{margin: "0px", fontSize: "14px", color: "black"}}>Unlike</p>
+                          <CommentsDisabledIcon style={{color: "black", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Hide comments</p>
                         </div>
-                    </IconButton>
-                    :
-                    <IconButton 
-                      onClick={()=>{
-                        setLikeonmount(!likeonmount);
-                        setCount(count+1);
-                        // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
-                        const data2send= {clap : count+1}
-                        fetch(`${base_url}/alter-clap-count/${blog_id}`, {
-                          method: "POST",
-                          body: JSON.stringify(data2send),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log(data2send))
-                        // fetch call to add record to liked_posts collection     --- backend returns nothing
-                        const data2put = {blog_id: blog_id ,author_id: localStorage.getItem("_id")}
-                        fetch(`${base_url}/alter-liked_posts/add`, {
-                          method: "POST",
-                          body: JSON.stringify(data2put),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log("data2put", data2put))
-                      }}
-                    >
-                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                          <ThumbUpIcon style={{color: "blue", fontSize: "30px"}} />
-                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Like</p>
+                      </IconButton>
+                      :
+                      <IconButton onClick={()=>setTrackcomment(!trackcomment)}> 
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
+                          <InsertCommentIcon style={{color: "green", fontSize: "30px"}} />
+                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Show comments</p>
                         </div>
-                    </IconButton>}
-                    {count}
+                      </IconButton>}
+                  </p>
+              </div> 
+              :
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <p 
+                  onClick={handleClickOpen}
+                  style={{display: "flex", alignItems: "center", gap: "8px", cursor : "pointer"}}>
+                  <div style={{display: "flex", flexDirection: "column"}}><ThumbUpIcon /> Like</div> {count}
                 </p>
-                <p>
-                    {bookmarkonmount ?
-                    <IconButton 
-                      onClick={()=>{
-                        setBookmarkonmount(!bookmarkonmount);
-                        // fetch call to remove record from saved_posts collection
-                        const data2remove_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
-                        fetch(`${base_url}/alter-saved_posts/remove`, {
-                          method: "POST",
-                          body: JSON.stringify(data2remove_book),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log(data2remove_book))
-                      }}
-                    >
-                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                          <BookmarkRemoveIcon style={{color: "#958c3a", fontSize: "30px"}} />
-                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Removed from saved post</p>
-                        </div>
-                    </IconButton>
-                    :
-                    <IconButton 
-                      onClick={()=>{
-                        setBookmarkonmount(!bookmarkonmount);
-                        // fetch call to add record to saved_posts collection
-                        const data2add_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
-                        fetch(`${base_url}/alter-saved_posts/add`, {
-                          method: "POST",
-                          body: JSON.stringify(data2add_book),
-                          headers: {
-                            "content-type" : "application/json"
-                          }
-                        }).then(()=>console.log(data2add_book))
-                      }}
-                    >
-                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                          <BookmarkAddIcon style={{color: "green", fontSize: "30px"}} />
-                          <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Add to saved post</p>
-                        </div>
-                    </IconButton>}
+                <p 
+                  onClick={handleClickOpen}
+                  style={{display: "flex", flexDirection: "column", alignItems: "center", cursor : "pointer"}}>
+                  <BookmarkAddIcon /> Add to saved post
                 </p>
-                <p>
-                    {trackcomment ?
-                    <IconButton onClick={()=>setTrackcomment(!trackcomment)} > 
-                      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                        <CommentsDisabledIcon style={{color: "black", fontSize: "30px"}} />
-                        <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Hide comments</p>
-                      </div>
-                    </IconButton>
-                    :
-                    <IconButton onClick={()=>setTrackcomment(!trackcomment)}> 
-                      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
-                        <InsertCommentIcon style={{color: "green", fontSize: "30px"}} />
-                        <p style={{margin: "0px", fontSize: "15px", color: "black"}}>Show comments</p>
-                      </div>
-                    </IconButton>}
+                <p 
+                  onClick={handleClickOpen}
+                  style={{display: "flex", flexDirection: "column", alignItems: "center", cursor : "pointer"}}>
+                  <InsertCommentIcon />
+                  Comment
                 </p>
-            </div>
+                <Dialog
+                  open={open}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogTitle style={{textAlign: "center"}}>{"Hello from MyTavelCompanion"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      <h3 style={{textAlign: "center"}}>Please login to get access to all the feature</h3>
+                        <ul style={{listStyleType: "none", color: "green", textAlign: "center"}}>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Write a blog post of your own</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}}/>Access all your published blogs </li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Edit your published blogs</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Delete your published blogs</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Save a post for read later</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon  style={{color: "green"}} />View comments on a post</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Comment on a post</li>
+                          <li style={{display: "flex", alignItems: "center", gap: "8px"}}><DoneAllIcon style={{color: "green"}} />Like a post</li>
+                        </ul>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions style={{display: "flex", justifyContent: "space-around"}}>
+                    <Button variant="contained" onClick={()=> navigate("/login")}>Sign-in</Button >
+                    <Button variant="contained" onClick={handleClose}>I will sign-in later</Button >
+                  </DialogActions>
+                </Dialog>
+              </div>
+            }
             <div className="commentrow">
                 {trackcomment ? <Commentsparent obj={obj} comments={comments} setComments={setComments} logged_userinfo={logged_userinfo}  /> : null}
             </div>
@@ -257,6 +332,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
 
 // About component
 export function About({obj}) {
+
+  const navigate = useNavigate();
     
   return (
     <div>
@@ -265,18 +342,18 @@ export function About({obj}) {
                 <img style={{width: "150px", height: "163px", objectFit: "cover", borderRadius: "50%"}} src={obj.user_info.profile_pic} alt={obj.user_info.name} />
             <div>
                 {/* Make the name as a link to direct to author specific page */}
-                <Link style={{textDecoration: "none", color: "black"}} to=""><h4 style={{margin: "0px", textAlign: "left"}}>{obj.user_info.name}</h4></Link>
+                <h4 onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{margin: "0px", textAlign: "left", cursor: "pointer"}}>{obj.user_info.name}</h4>
                 <p style={{marginTop: "7px", marginBottom : "4px", fontSize: "15px", textAlign: "left"}}>{obj.user_info.about}</p>
             </div>
         </div>
         <div className="aboutsocialhandles">
-            {obj.user_info.fb_link !=="" ? <a rel="noreferrer" href={obj.user_info.fb_link} target="_blank">
+            {obj.user_info.fb_link !=="" ? <a href={obj.user_info.fb_link} target="_blank">
                 <FacebookIcon />
             </a> : null}
-            {obj.user_info.twitter_link!=="" ? <a rel="noreferrer" href={obj.user_info.twitter_link} target="_blank">
+            {obj.user_info.twitter_link!=="" ? <a href={obj.user_info.twitter_link} target="_blank">
                 <TwitterIcon />
             </a> : null}
-            {obj.user_info.insta_link!== "" ? <a rel="noreferrer" href={obj.user_info.insta_link} target="_blank">
+            {obj.user_info.insta_link!== "" ? <a href={obj.user_info.insta_link} target="_blank">
                 <InstagramIcon />
             </a> : null}
         </div>
@@ -295,9 +372,10 @@ export function Morefromauthor({morefromauthor}){
             {/* Any 2 different blogs other than currently opened blogs by author & loop it out calling Morefromauthorindividual  */}
             {morefromauthor[0] ? morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />) : "No more blogs by author"}
             {/* Link it to author specific page */}
-            <div style={{marginTop: "15px"}}>
-              <Link to="" style={{marginLeft: "33%", textDecoration: "none"}}>view all about user</Link>
-            </div>
+            {/* didnt do it coz it is possible that user has only 1 article in which case it is not haviing data to navigate to author specific component */}
+            {/* <div style={{marginTop: "15px"}}>
+              <p onClick={()=>navigate(`/author-specific/${morefromauthor[0].}`)} style={{textAlign: "center", cursor: "pointer"}}>view all about user</p>
+            </div> */}
         </div>
     )
 }

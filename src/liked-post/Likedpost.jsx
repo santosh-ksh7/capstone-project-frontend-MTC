@@ -8,6 +8,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Ifnotloggedin} from "../if-not-logged-in/Ifnotloggedin";
 
 
 
@@ -27,19 +28,21 @@ export function Likedpost() {
 
     return (
         <div>
-            <Nav />
-            <div style={{display: "flex", justifyContent: "space-between"}}>
-                <div className="leftchild">
-                    <h2 style={{textAlign: "center"}}>My Liked Blogs</h2>
-                    <hr />
-                    {likedposts ? likedposts.map((ele,index)=> <Likedpostsubcomponent obj={ele} key={index} setLikedposts={setLikedposts} />) : "Loading"}
+            {localStorage.getItem("_id")  ? <div>
+                <Nav />
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div className="leftchild">
+                        <h2 style={{textAlign: "center"}}>My Liked Blogs</h2>
+                        <hr />
+                        {likedposts ? likedposts.map((ele,index)=> <Likedpostsubcomponent obj={ele} key={index} setLikedposts={setLikedposts} />) : "Loading"}
+                    </div>
+                    <div className="rightchild">
+                        <Rightchild1 />
+                        <hr />
+                        <Homerightchild3 />
+                    </div>
                 </div>
-                <div className="rightchild">
-                    <Rightchild1 />
-                    <hr />
-                    <Homerightchild3 />
-                </div>
-            </div>
+            </div> : <Ifnotloggedin />}
         </div>
       )
 }
@@ -59,7 +62,7 @@ export function Likedpostsubcomponent({obj, setLikedposts}) {
             <div className="normalcomponent">
                 <div className="normalcomponentleftchild">
                     <div className="topcol">
-                        <div style={{display:"flex", alignItems: "center", gap: "8px"}}>
+                        <div onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", cursor: "pointer"}}>
                             <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
                             <p className='authorname'>{obj.user_info.name}</p>
                         </div>

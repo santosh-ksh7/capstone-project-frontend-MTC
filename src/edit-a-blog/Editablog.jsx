@@ -9,6 +9,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 
+// DIalog box until the upload process happens
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 const base_url = "http://localhost:5000"
@@ -37,6 +43,18 @@ export function Editablog() {
 
 
 export function Editcomponent({obj}) {
+
+    // dialog-box logic from material UI
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    // dialog-box logic from material UI
 
     const navigate = useNavigate();
 
@@ -76,6 +94,7 @@ export function Editcomponent({obj}) {
         initialValues: {title: obj.title, story: obj.story, tag: obj.tag},
         validationSchema: writeschema,
         onSubmit: (values) => {
+            handleClickOpen();
             // Make a fetch call to cloudinary to get the url only if the initial image URl has changed. Other wise no need to change the image url leave it as it is only update the form data
             if(imgpreview === obj.blog_pic){
                 // since the image is not updated in this case
@@ -92,7 +111,7 @@ export function Editcomponent({obj}) {
                     headers: {
                         "content-type": "application/json"
                     }
-                }).then((data)=>data.json()).then((data)=>{alert(data.msg); navigate("/my-account/published-blogs")})
+                }).then((data)=>data.json()).then((data)=>{handleClose() ;alert(data.msg); navigate("/my-account/published-blogs")})
                 console.log(data2send);
             }else{
                 // since the image has changed so we need to get url of new updated image from cloudinary before storing info in DB
@@ -117,7 +136,7 @@ export function Editcomponent({obj}) {
                         headers: {
                             "content-type": "application/json"
                         }
-                    }).then((data)=>data.json()).then((data)=>{alert(data.msg); navigate("/my-account/published-blogs")})
+                    }).then((data)=>data.json()).then((data)=>{handleClose() ;alert(data.msg); navigate("/my-account/published-blogs")})
                     console.log(data2send);
                 })
             }
@@ -178,6 +197,21 @@ export function Editcomponent({obj}) {
             {formik.touched.tag && formik.errors.tag ? <p style={{color: "red", textAlign: "left"}}>{formik.errors.tag}</p> : null}
             <button className="subbtn" type="submit">Save Changes</button>
             <button className="canbtn" onClick={()=>navigate("/my-account/published-blogs")}>Cancel</button>
+            <Dialog
+                open={open}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle style={{textAlign: "center"}}>{"Wlcome to MyTavelCompanion"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    <h3 style={{textAlign: "center", color: "black"}}>Please hold on while we upload your blog.</h3>
+                    <p style={{textAlign: "center", color: "red"}}>Do not click anywhere or press any button.</p>
+                    <p style={{textAlign: "center"}}><img src="http://www.professionalservicesllc.com/clients/stoneledge/images/loaders/uploading.gif" alt="uploading gif" style={{width: "150px", height: "150px"}} /></p> 
+                </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </form>
     </div>
   )

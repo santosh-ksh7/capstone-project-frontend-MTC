@@ -1,0 +1,17 @@
+.rightchildauthorspecific{
+    width: 350px;
+    margin-top: 50px;;
+    padding-left: 15px;
+    position: fixed;
+    right: 15px;
+    border-left: 1px dotted grey;
+}
+
+.maincccc{
+    display: flex;
+}
+
+.leftchildauthorspecific{
+    width: 850px;
+    margin: 50px;
+}

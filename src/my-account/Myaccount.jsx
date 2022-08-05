@@ -7,7 +7,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
-import{useNavigate} from "react-router-dom"
+import{useNavigate} from "react-router-dom";
+import {Ifnotloggedin} from "../if-not-logged-in/Ifnotloggedin";
 
 
 
@@ -16,35 +17,32 @@ const base_url = "http://localhost:5000";
 
 export function Myaccount() {
 
-    // It is coming from the local storage (the _id of logged in user dynamically)
-    let uuid, token;
-
     const [userdata, setUserdata] = useState(null)
 
     useEffect(() => {
-        uuid = localStorage.getItem("_id");
-        token = localStorage.getItem("token");
-        if(uuid && token){
-            fetch(`${base_url}/individual-user-info/${uuid}`).then((data)=>data.json()).then((data)=>{setUserdata(data); console.log(data);})
+        if(localStorage.getItem("_id") && localStorage.getItem("token")){
+            fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setUserdata(data); console.log(data);})
         }
     }, [])
     
 
   return (
     <div>
-        <Nav />
-        <div style={{display: "flex"}}>
-            <div className="leftchild">
-                <h2 style={{textAlign: "center"}}>Account Info</h2>
-                <hr />
-                {userdata ? <Leftchild1 obj={userdata} /> : "Loading..."}
+        {localStorage.getItem("_id") ? <div>
+            <Nav />
+            <div style={{display: "flex"}}>
+                <div className="leftchild">
+                    <h2 style={{textAlign: "center"}}>Account Info</h2>
+                    <hr />
+                    {userdata ? <Leftchild1 obj={userdata} /> : "Loading..."}
+                </div>
+                <div className="rightchild">
+                    <Rightchild1 />
+                    <hr />
+                    <Homerightchild3 />
+                </div>
             </div>
-            <div className="rightchild">
-                <Rightchild1 />
-                <hr />
-                <Homerightchild3 />
-            </div>
-        </div>
+        </div> : <Ifnotloggedin />}
     </div>
   )
 }

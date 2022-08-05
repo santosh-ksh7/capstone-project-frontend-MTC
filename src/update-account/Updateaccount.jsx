@@ -13,6 +13,13 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
+import { Ifnotloggedin } from "../if-not-logged-in/Ifnotloggedin";
+
+// DIalog box until the upload process happens
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -20,9 +27,6 @@ const base_url = "http://localhost:5000";
 
 
 export function Updateaccount() {
-
-    // It is coming from the local storage (the _id of logged in user dynamically)
-    let uuid, token;
 
     const [imgdata, setImgdata] = useState(null)                 // This holds thge entire file data
     const [userdata, setUserdata] = useState(null)              // holds entire user info stored in DB
@@ -48,26 +52,27 @@ export function Updateaccount() {
     }
 
     useEffect(() => {
-        uuid = localStorage.getItem("_id");
-        token = localStorage.getItem("token");
-        if(uuid && token){
-            fetch(`${base_url}/individual-user-info/${uuid}`).then((data)=>data.json()).then((data)=>{setUserdata(data); setUsrpic(data.profile_pic); console.log(data);})
+        if(localStorage.getItem("_id") && localStorage.getItem("token")){
+            fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setUserdata(data); setUsrpic(data.profile_pic); console.log(data);})
         }
     }, [])
 
   return (
     <div>
-        <Nav />
-        <div style={{display: "flex"}}>
-            <div className="leftchild">
-                {userdata ? <Leftchild1update obj={userdata} usrpic={usrpic} setUsrpic={setUsrpic} fileChange={fileChange} imgdata={imgdata} /> : "Loading....."}
+        {localStorage.getItem("_id") ? 
+        <div>
+            <Nav />
+            <div style={{display: "flex"}}>
+                <div className="leftchild">
+                    {userdata ? <Leftchild1update obj={userdata} usrpic={usrpic} setUsrpic={setUsrpic} fileChange={fileChange} imgdata={imgdata} /> : "Loading....."}
+                </div>
+                <div className="rightchild">
+                    <Rightchild1 />
+                    <hr />
+                    <Homerightchild3 />
+                </div>
             </div>
-            <div className="rightchild">
-                <Rightchild1 />
-                <hr />
-                <Homerightchild3 />
-            </div>
-        </div>
+        </div> : <Ifnotloggedin /> }
     </div>
   )
 }
@@ -76,6 +81,18 @@ export function Updateaccount() {
 
 
 export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata }) {
+
+    // dialog-box logic from material UI
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    // dialog-box logic from material UI
 
     const navigate = useNavigate();
 
@@ -90,6 +107,7 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
         initialValues: {name: obj.name, email: obj.email, about: obj.about, fb_link: obj.fb_link, insta_link: obj.insta_link, twitter_link: obj.twitter_link},
         validationSchema: accountupdateschema,
         onSubmit: (values) => {
+            handleClickOpen();
             // Make fetch call to Cloudinary only if user has upadted the image file. Do not make fetch call to cloudinary if user hasn't updated it's profile pic or removed the pic
             if(usrpic === obj.profile_pic || usrpic === "https://res.cloudinary.com/dz7pcmtxi/image/upload/v1658877142/blank-profile-picture-g3824f2029_1280_rpx6sg.png"){
                 // directly insert data to DB
@@ -106,6 +124,7 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
                     }
                 }).then((data)=>data.json()).then((data)=>{
                     if(data.acknowledged){
+                        handleClose();
                         alert("Succesfully updated account info")
                         navigate("/my-account")
                     }else{
@@ -134,6 +153,7 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
                         }
                     }).then((data)=>data.json()).then((data)=>{
                         if(data.acknowledged){
+                            handleClose();
                             alert("Succesfully updated account info")
                             navigate("/my-account")
                         }else{
@@ -256,16 +276,33 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
                         value = {formik.values.twitter_link}
                         variant="standard"
                     />
-                    <button type="submit">Save changes</button>
+                    <button className="mcsc" type="submit">Save all changes</button>
                 </form>
             </div>
             <div className="rightchildupdate">
                 <img src={usrpic} alt={obj.name} className="imgup" />
-                <div>
-                    <label htmlFor="ppup"><p className="setnew">Update profile image</p></label>
-                    <input onChange={fileChange} type="file" id="ppup" />
+                <div style={{display: "flex", marginTop: "10px", justifyContent: "space-between"}}>
+                    <div>
+                        <label htmlFor="ppup"><p className="setnew">Update profile pic</p></label>
+                        <input onChange={fileChange} type="file" id="ppup" />
+                    </div>
+                    <button onClick={()=>setUsrpic("https://res.cloudinary.com/dz7pcmtxi/image/upload/v1658877142/blank-profile-picture-g3824f2029_1280_rpx6sg.png")} className="rmpp">Remove profile pic</button>
                 </div>
-                <button onClick={()=>setUsrpic("https://res.cloudinary.com/dz7pcmtxi/image/upload/v1658877142/blank-profile-picture-g3824f2029_1280_rpx6sg.png")} className="rmpp">Remove profile pic</button>
+                <Dialog
+                    open={open}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle style={{textAlign: "center"}}>{"Wlcome to MyTavelCompanion"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <h3 style={{textAlign: "center", color: "black"}}>Please hold on while we upload your blog.</h3>
+                            <p style={{textAlign: "center", color: "red"}}>Do not click anywhere or press any button.</p>
+                            <p style={{textAlign: "center"}}><img src="http://www.professionalservicesllc.com/clients/stoneledge/images/loaders/uploading.gif" alt="uploading gif" style={{width: "150px", height: "150px"}} /></p> 
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     </div>

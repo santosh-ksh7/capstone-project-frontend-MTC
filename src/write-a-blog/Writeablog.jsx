@@ -7,6 +7,13 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { Ifnotloggedin } from "../if-not-logged-in/Ifnotloggedin";
+
+// DIalog box until the upload process happens
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -16,10 +23,15 @@ const base_url = "http://localhost:5000"
 export function Writeablog() {
   return (
     <div>
-        <Nav />
-            <div className="leftchild">
-                <Writesubcomponent />
+        {localStorage.getItem("_id") ? 
+            <div>
+                <Nav />
+                <div className="leftchild">
+                    <Writesubcomponent />
+                </div>
             </div>
+            : 
+            <Ifnotloggedin />}
     </div>
   )
 }
@@ -30,6 +42,18 @@ export function Writeablog() {
 export function Writesubcomponent() {
 
     const navigate = useNavigate();
+
+    // dialog-box logic from material UI
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    // dialog-box logic from material UI
 
     const[file2cloudinary, setFile2cloudinary] = useState(null)     // This holds the file data that user uploads
     const[imgpreview, setImgpreview] = useState(null)               // this holds the image file data
@@ -69,6 +93,7 @@ export function Writesubcomponent() {
         initialValues: {title: "", story: "", tag: ""},
         validationSchema: writeschema,
         onSubmit: (values) => {
+            handleClickOpen();
             // image to upload to cloudinary (using fetch API of cloudinary) & get back the URL of uploaded image to store it in DB blogs collection
             // Before this step ensure that there is an image file selected
             if(file2cloudinary){
@@ -93,6 +118,7 @@ export function Writesubcomponent() {
                         }
                     }).then((data)=>data.json()).then((data)=>{
                         if(data.acknowledged){
+                            handleClose();
                             alert("The blog post is succesfully uploaded. Redirecting to home.");
                             navigate("/home");
                         }
@@ -155,6 +181,21 @@ export function Writesubcomponent() {
             {formik.touched.tag && formik.errors.tag ? <p style={{color: "red", textAlign: "left"}}>{formik.errors.tag}</p> : null}
             <button className="subbtn" type="submit">Publish your blog</button>
             <input className="resbtn" onClick={()=> {setImgpreview(null); setShowimg(false); setFile2cloudinary(null)}} type="reset" value="reset" />
+            <Dialog
+                open={open}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle style={{textAlign: "center"}}>{"Wlcome to MyTavelCompanion"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    <h3 style={{textAlign: "center", color: "black"}}>Please hold on while we upload your blog.</h3>
+                    <p style={{textAlign: "center", color: "red"}}>Do not click anywhere or press any button.</p>
+                    <p style={{textAlign: "center"}}><img src="http://www.professionalservicesllc.com/clients/stoneledge/images/loaders/uploading.gif" alt="uploading gif" style={{width: "150px", height: "150px"}} /></p> 
+                </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </form>
     </div>
   )
