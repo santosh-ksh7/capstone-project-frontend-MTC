@@ -32,7 +32,13 @@ export function Editablog() {
 
     useEffect(() => {
         // fetch call to get the blog data
-        fetch(`${base_url}/write-a-blog/get-data-4-editing-a-blog/${id}`).then((data)=>data.json()).then((data)=>setBlogdata(data))
+        fetch(`${base_url}/write-a-blog/get-data-4-editing-a-blog/${id}`,{
+            method: "GET",
+            headers: {
+                "content-type" : "application/json",
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }).then((data)=>data.json()).then((data)=>setBlogdata(data))
     }, [])
     
 
@@ -115,7 +121,8 @@ export function Editcomponent({obj}) {
                     method: "POST",
                     body: JSON.stringify(data2send),
                     headers: {
-                        "content-type": "application/json"
+                        "content-type": "application/json",
+                        "x-auth-token": localStorage.getItem("token")
                     }
                 }).then((data)=>data.json()).then((data)=>{handleClose() ;alert(data.msg); navigate("/my-account/published-blogs")})
                 console.log(data2send);
@@ -141,7 +148,8 @@ export function Editcomponent({obj}) {
                         method: "POST",
                         body: JSON.stringify(data2send),
                         headers: {
-                            "content-type": "application/json"
+                            "content-type": "application/json",
+                            "x-auth-token": localStorage.getItem("token")
                         }
                     }).then((data)=>data.json()).then((data)=>{handleClose() ;alert(data.msg); navigate("/my-account/published-blogs")})
                     console.log(data2send);

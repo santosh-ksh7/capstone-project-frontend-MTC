@@ -53,7 +53,13 @@ export function Updateaccount() {
 
     useEffect(() => {
         if(localStorage.getItem("_id") && localStorage.getItem("token")){
-            fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setUserdata(data); setUsrpic(data.profile_pic); console.log(data);})
+            fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            }).then((data)=>data.json()).then((data)=>{setUserdata(data); setUsrpic(data.profile_pic); console.log(data);})
         }
     }, [])
 
@@ -120,7 +126,8 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
                     method: "POST",
                     body: JSON.stringify(data4DB),
                     headers: {
-                        "content-type" : "application/json"
+                        "content-type" : "application/json",
+                        "x-auth-token": localStorage.getItem("token")
                     }
                 }).then((data)=>data.json()).then((data)=>{
                     if(data.acknowledged){
@@ -149,7 +156,8 @@ export function Leftchild1update({obj, usrpic, setUsrpic, fileChange, imgdata })
                         method: "POST",
                         body: JSON.stringify(data4DB),
                         headers: {
-                            "content-type" : "application/json"
+                            "content-type" : "application/json",
+                            "x-auth-token": localStorage.getItem("token")
                         }
                     }).then((data)=>data.json()).then((data)=>{
                         if(data.acknowledged){

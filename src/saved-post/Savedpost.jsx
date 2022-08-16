@@ -25,7 +25,13 @@ export function Savedpost() {
     useEffect(()=>{
         // Make a fetch call to see all blogs saved by the user. Get the user id from local storage & pass it as params in the url. Run this callback in useEffect only if user is looged in i.e.. _id stored in local storage
         if(localStorage.getItem("_id")){
-            fetch(`${base_url}/sign/get-all-saved-posts/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=> setSavedposts(data))
+            fetch(`${base_url}/sign/get-all-saved-posts/${localStorage.getItem("_id")}`, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            }).then((data)=>data.json()).then((data)=> setSavedposts(data))
         }
         
     },[])
@@ -100,7 +106,8 @@ export function Savedpostsubcomponent({obj, setSavedposts}) {
                                     method: "POST",
                                     body: JSON.stringify(data2send),
                                     headers: {
-                                        "content-type" : "application/json"
+                                        "content-type" : "application/json",
+                                        "x-auth-token": localStorage.getItem("token")
                                     }
                                 }).then((data)=>data.json()).then((data)=>{
                                     // Set the updated blog list using setState

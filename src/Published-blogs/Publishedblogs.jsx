@@ -26,7 +26,13 @@ export function Publishedblogs() {
 
     useEffect(()=>{
         if(localStorage.getItem("_id")){
-            fetch(`${base_url}/sign/get-all-blogs/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>setBlogsofuser(data))
+            fetch(`${base_url}/sign/get-all-blogs/${localStorage.getItem("_id")}`, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            }).then((data)=>data.json()).then((data)=>setBlogsofuser(data))
         }
     }, [])
 
@@ -97,7 +103,13 @@ export function Blogsbyuser({obj, setBlogsofuser}) {
                         <Button 
                             onClick={()=>{
                                 // alert("Are you sure you want to delete yout published blogs.");
-                                fetch(`${base_url}/sign/delete-a-post/${obj._id}`).then((data)=>data.json()).then((data)=>{
+                                fetch(`${base_url}/sign/delete-a-post/${obj._id}`, {
+                                    method: "GET",
+                                    headers: {
+                                        "content-type" : "application/json",
+                                        "x-auth-token" : localStorage.getItem("token")
+                                    }
+                                }).then((data)=>data.json()).then((data)=>{
                                     toast.success(data.msg);
                                     setBlogsofuser(data.updateddata);
                                 });

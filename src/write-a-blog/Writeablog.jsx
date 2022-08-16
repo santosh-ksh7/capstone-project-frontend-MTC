@@ -120,7 +120,8 @@ export function Writesubcomponent() {
                         method: "POST",
                         body: JSON.stringify(data2putindb),
                         headers: {
-                            "content-type" : "application/json"
+                            "content-type" : "application/json",
+                            "x-auth-token": localStorage.getItem("token")
                         }
                     }).then((data)=>data.json()).then((data)=>{
                         if(data.acknowledged){
