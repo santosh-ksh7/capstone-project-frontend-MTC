@@ -18,13 +18,6 @@ export function Nav() {
         }
     }, [])
    
-
-    // delete after designing my-account page. Coz sign-out should only be available there
-    function Signout(){
-        localStorage.removeItem("_id");
-        localStorage.removeItem("token");
-    }
-
     
 
     return (
@@ -38,8 +31,8 @@ export function Nav() {
                   <Link style={{textDecoration: "none", color: "wheat"}} to="/write" >Write</Link>
                   {/* The image has to be fetched from users DB bu using author_id stored in local storage upon successfull login. This step has to be done in useEffect if jwt & uuid is true. */}
                   {userdata ? <img onClick={()=>navigate("/my-account")} className="navbarpp" src={userdata.profile_pic} alt={userdata.name} /> : <Link style={{textDecoration: "none", color: "wheat"}} to="/login" >Sign-in</Link>}
-                  {/* delete after designing my-account page. Coz sign-out should only be available there */}
-                  <Link onClick={Signout} style={{textDecoration: "none", color: "wheat"}} to="/" >Sign-out</Link>
+                  {/* delete after designing my-account page. Coz sign-out should only be available there
+                  <Link onClick={Signout} style={{textDecoration: "none", color: "wheat"}} to="/" >Sign-out</Link> */}
               </div>
           </div>
     )

@@ -39,12 +39,12 @@ export function Authorspecific() {
         <div className="maincccc">
             <div className="leftchildauthorspecific">
                 <div className="lc1about">
-                    <h3>About the author</h3>
+                    <h2>About the author</h2>
                     <hr />
                     {authordet ? <Lcaboutauthor obj={authordet} /> : "Loading....."}
                     <hr />
                     {/* instaed of user give the name */}
-                    <h3>All the blogs by user</h3>
+                    <h2>All the blogs by user</h2>
                     <hr />
                     {allblogs ? allblogs.map((ele,index)=> <Blogs obj={ele} key={index} />) : "Loadng..."}
                 </div>

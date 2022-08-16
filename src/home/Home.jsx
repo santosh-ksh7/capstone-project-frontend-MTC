@@ -178,7 +178,7 @@ export function Blogs({obj}) {
             <div className="normalcomponent">
                 <div className="normalcomponentleftchild">
                     <div className="topcol">
-                        <div onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display: "flex", gap: "8px", alignItems: "center", cursor: "pointer"}}>
+                        <div title='Go to author specific page' onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display: "flex", gap: "8px", alignItems: "center", cursor: "pointer"}}>
                             <img className='authorimage' src={obj.user_info.profile_pic} alt={obj.user_info.name} />
                             <p style={{margin: "0px"}} className='authorname'>{obj.user_info.name}</p>
                         </div>

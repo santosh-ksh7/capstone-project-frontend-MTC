@@ -11,6 +11,10 @@ import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// react toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const base_url = "http://localhost:5000"; 
 
@@ -38,14 +42,15 @@ export function Login() {
           }
         }).then((data)=>data.json()).then((data)=>{
           if(data.msg==="Succesfully logged in"){
-            alert(data.msg)
+            // alert(data.msg)
             // storing _id & JWT to local storage
             localStorage.setItem("token", data.token)
             localStorage.setItem("_id", data._id)
             // navigate to / (i.e.. landing page of your application)
             navigate("/")
           }else{
-            alert(data.msg)
+            // alert(data.msg)
+            toast.error(data.msg);
           }
         })
         console.log(values);
@@ -109,6 +114,7 @@ export function Login() {
             <p style={{color: "grey"}}>----------or---------</p>
             <Link style={{marginLeft: "5%", fontSize: "15px", textDecoration: "none"}} to="/create-account">New to MyTravelCompanion? Create Account</Link>
         </div>
+        <ToastContainer />
     </div>
   )
 }

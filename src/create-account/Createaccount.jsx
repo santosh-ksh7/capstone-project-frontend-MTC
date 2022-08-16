@@ -54,7 +54,7 @@ export function Createaccount() {
   return (
     <div className="createacccomp">
         <div>
-            <h2>MyTravelCompanion</h2>
+            <h2 style={{textAlign: "center"}}>MyTravelCompanion</h2>
             <p>Welcome to MyTravelCompanion</p>
             <h4>Register / Create New Account</h4>
             <form onSubmit={formik.handleSubmit}>

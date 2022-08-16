@@ -122,7 +122,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
     <div style={{display: "flex"}}>
         <div className="indi_blog leftchild">
             <div className="toprow">
-                    <p onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", color: "black", cursor: "pointer"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
+                    <p title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", color: "black", cursor: "pointer"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><i className="fa-solid fa-tags" />  {obj.tag}</p>
@@ -342,7 +342,7 @@ export function About({obj}) {
                 <img style={{width: "150px", height: "163px", objectFit: "cover", borderRadius: "50%"}} src={obj.user_info.profile_pic} alt={obj.user_info.name} />
             <div>
                 {/* Make the name as a link to direct to author specific page */}
-                <h4 onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{margin: "0px", textAlign: "left", cursor: "pointer"}}>{obj.user_info.name}</h4>
+                <h4 title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{margin: "0px", textAlign: "left", cursor: "pointer"}}>{obj.user_info.name}</h4>
                 <p style={{marginTop: "7px", marginBottom : "4px", fontSize: "15px", textAlign: "left"}}>{obj.user_info.about}</p>
             </div>
         </div>
@@ -370,7 +370,7 @@ export function Morefromauthor({morefromauthor}){
         <div>
             <h3>More from the author</h3>
             {/* Any 2 different blogs other than currently opened blogs by author & loop it out calling Morefromauthorindividual  */}
-            {morefromauthor[0] ? morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />) : "No more blogs by author"}
+            {morefromauthor[0] ? morefromauthor.map((ele, index) => <Morefromauthorindividual obj={ele} key={index} />) : <h5 style={{textAlign: "center"}}>No more blogs by author</h5>}
             {/* Link it to author specific page */}
             {/* didnt do it coz it is possible that user has only 1 article in which case it is not haviing data to navigate to author specific component */}
             {/* <div style={{marginTop: "15px"}}>

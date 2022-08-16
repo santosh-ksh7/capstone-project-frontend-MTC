@@ -12,6 +12,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Ifnotloggedin } from "../if-not-logged-in/Ifnotloggedin";
 
 
+// react toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const base_url = "http://localhost:5000"
 
@@ -33,7 +38,11 @@ export function Publishedblogs() {
                 <div className="publeftchild">
                     <h2 style={{textAlign: "center"}}>My Published Blogs</h2>
                     <hr />
-                    {blogsofuser ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : "Loading..."}
+                    {blogsofuser ? 
+                    <div>
+                        {blogsofuser[0] ? blogsofuser.map((ele,index)=> <Blogsbyuser obj={ele} key={index} setBlogsofuser={setBlogsofuser} />) : <h4 style={{textAlign: "center", color: "red"}}>No published blogs by user. Start writting your own blogs.</h4>}
+                    </div>
+                    : "Loading..."}
                 </div>
                 <div className="pubri8child">
                     <Rightchild1 />
@@ -42,6 +51,7 @@ export function Publishedblogs() {
                 </div>
             </div>
         </div> : <Ifnotloggedin />}
+        <ToastContainer />
     </div>
   )
 }
@@ -86,9 +96,9 @@ export function Blogsbyuser({obj, setBlogsofuser}) {
                         {/* When a blog is delted the blog should be deleted from liked collection, saved collection, comments collection & finally blogs collection. */}
                         <Button 
                             onClick={()=>{
-                                alert("Are you sure you want to delete yout published blogs.");
+                                // alert("Are you sure you want to delete yout published blogs.");
                                 fetch(`${base_url}/sign/delete-a-post/${obj._id}`).then((data)=>data.json()).then((data)=>{
-                                    alert(data.msg);
+                                    toast.success(data.msg);
                                     setBlogsofuser(data.updateddata);
                                 });
                             }}

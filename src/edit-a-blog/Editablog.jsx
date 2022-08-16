@@ -16,6 +16,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+// react toaster notifications
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const base_url = "http://localhost:5000"
 
@@ -35,6 +40,7 @@ export function Editablog() {
     <div>
         <Nav />
         {blogdata ? <Editcomponent obj={blogdata} /> : "Loading....."}
+        <ToastContainer />
     </div>
   )
 }
@@ -75,10 +81,10 @@ export function Editcomponent({obj}) {
                 // To store the file data that the user uploads
                 setFile2cloudinary(newimgfile)
             }else{
-                alert("Selected file size should be less than 5 mb. Please select appropriate file again")
+                toast.error("Selected file size should be less than 5 mb. Please select appropriate file again")
             }
         }else{
-            alert("Selected file type should be JPEG, JPG or PNG. Please select appropriate file again")
+            toast.error("Selected file type should be JPEG, JPG or PNG. Please select appropriate file again")
         }
     }
 
@@ -94,9 +100,9 @@ export function Editcomponent({obj}) {
         initialValues: {title: obj.title, story: obj.story, tag: obj.tag},
         validationSchema: writeschema,
         onSubmit: (values) => {
-            handleClickOpen();
             // Make a fetch call to cloudinary to get the url only if the initial image URl has changed. Other wise no need to change the image url leave it as it is only update the form data
             if(imgpreview === obj.blog_pic){
+                handleClickOpen();
                 // since the image is not updated in this case
                 const data2send = {
                     ...obj,
@@ -114,6 +120,7 @@ export function Editcomponent({obj}) {
                 }).then((data)=>data.json()).then((data)=>{handleClose() ;alert(data.msg); navigate("/my-account/published-blogs")})
                 console.log(data2send);
             }else{
+                handleClickOpen();
                 // since the image has changed so we need to get url of new updated image from cloudinary before storing info in DB
                 const img2upload = new FormData();
                 img2upload.append('file', file2cloudinary);

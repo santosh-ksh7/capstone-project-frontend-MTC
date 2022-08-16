@@ -7,6 +7,11 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import InputAdornment from '@mui/material/InputAdornment';
 
 
+// react toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const base_url = "http://localhost:5000";
 
 export function Forgotpwd1() {
@@ -30,9 +35,10 @@ export function Forgotpwd1() {
         }
       }).then((data)=>data.json()).then((data)=>{
         if(data.msg==="This email ID is not registered. Please use your registered email ID"){
-          alert(data.msg)
+          // alert(data.msg)
+          toast.error(data.msg)
         }else{
-          alert(data.msg)
+          // alert(data.msg)
           // store registered email of user in local storage to complete further process of reset password
           localStorage.setItem("email", data.data.email)
           // navigate to validate OTP page
@@ -79,6 +85,7 @@ export function Forgotpwd1() {
                 <Link style={{fontSize: "15px", textDecoration: "none"}} to="/create-account">New to MyTravelCompanion? Create Account</Link>
             </p>
         </div>
+        <ToastContainer />
     </div>
   )
 }

@@ -10,6 +10,11 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Ifnotloggedin} from "../if-not-logged-in/Ifnotloggedin";
 
+// react toaster
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 
 const base_url = "http://localhost:5000";
@@ -34,7 +39,13 @@ export function Likedpost() {
                     <div className="leftchild">
                         <h2 style={{textAlign: "center"}}>My Liked Blogs</h2>
                         <hr />
-                        {likedposts ? likedposts.map((ele,index)=> <Likedpostsubcomponent obj={ele} key={index} setLikedposts={setLikedposts} />) : "Loading"}
+                        {/* {likedposts ? likedposts.map((ele,index)=> <Likedpostsubcomponent obj={ele} key={index} setLikedposts={setLikedposts} />) : "Loading"} */}
+                        {likedposts ? 
+                            <div>
+                               {likedposts[0] ? likedposts.map((ele,index)=> <Likedpostsubcomponent obj={ele} key={index} setLikedposts={setLikedposts} />) : <h4 style={{textAlign: "center", color: "red"}}>No Liked posts by the user. Start liking posts & spread love.</h4>} 
+                            </div> 
+                            : "Loading"
+                        }
                     </div>
                     <div className="rightchild">
                         <Rightchild1 />
@@ -43,6 +54,7 @@ export function Likedpost() {
                     </div>
                 </div>
             </div> : <Ifnotloggedin />}
+            <ToastContainer />
         </div>
       )
 }
@@ -80,7 +92,7 @@ export function Likedpostsubcomponent({obj, setLikedposts}) {
                         <Button 
                             // You wiil need to senfd the blog id as well ass the user id. Their matching combo gets deleted. Make a POST fetch call with both the data.
                             onClick={()=>{
-                                alert("Are you sure you want to remove this from your liked blogs.");
+                                // alert("Are you sure you want to remove this from your liked blogs.");
                                 const data2send = {
                                     blog_id: obj.blog_id,
                                     loggeduserid : obj.author_id
@@ -94,6 +106,7 @@ export function Likedpostsubcomponent({obj, setLikedposts}) {
                                 }).then((data)=>data.json()).then((data)=>{
                                     // Set the updated blog list using setState
                                     setLikedposts(data)
+                                    toast.success("Succesfully removed from your bookmarks / saved posts")
                                 });
                             }}
                             variant="outlined" 

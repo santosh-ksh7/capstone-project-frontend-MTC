@@ -8,6 +8,11 @@ import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import KeyIcon from '@mui/icons-material/Key';
 
 
+// react toastift
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const base_url = "http://localhost:5000";
 
@@ -37,9 +42,10 @@ export function Forgotpwd2() {
         }
       }).then((data)=>data.json()).then((data)=>{
         if(data.msg==="OTP didn't match. Enter the exact OTP sent to your registered email."){
-          alert(data.msg)
+          // alert(data.msg)
+          toast.error(data.msg)
         }else{
-          alert(data.msg)
+          // alert(data.msg)
           // navigate to next stage of reset password flow
           navigate("/forgot-password-3")
         }
@@ -88,6 +94,7 @@ export function Forgotpwd2() {
                 <Link style={{fontSize: "15px", textDecoration: "none"}} to="/create-account">New to MyTravelCompanion? Create Account</Link>
             </p>
         </div>
+        <ToastContainer />
     </div>
   )
 }

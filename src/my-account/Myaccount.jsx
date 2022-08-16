@@ -73,6 +73,13 @@ export function Leftchild1({obj}){
 
 export function Rightchild1() {
 
+
+    // delete after designing my-account page. Coz sign-out should only be available there
+    function Signout(){
+        localStorage.removeItem("_id");
+        localStorage.removeItem("token");
+    }
+
     const navigate = useNavigate();
 
   return (
@@ -87,12 +94,18 @@ export function Rightchild1() {
             <div style={{display: "flex", justifyContent: "space-between", marginTop: "15px", marginBottom: "15px"}}>
                 <button 
                     style={{cursor: "pointer", color: "white", backgroundColor: "blue", borderRadius: "10px", padding: "5px"}}
-                    onClick={()=> {navigate("");}}>
+                    onClick={()=> {
+                        Signout();
+                        navigate("/forgot-password-1");
+                    }}>
                     Update password
                 </button>
                 <button
                     style={{cursor: "pointer", color: "white", backgroundColor: "green", borderRadius: "10px", padding: "5px"}} 
-                    onClick={()=> {navigate("");}}>
+                    onClick={()=> {
+                        Signout(); 
+                        navigate("/");
+                    }}>
                     Sign-out
                 </button>
                 <button 

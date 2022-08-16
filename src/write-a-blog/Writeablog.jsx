@@ -16,6 +16,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+// react toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const base_url = "http://localhost:5000"
 
@@ -32,6 +37,7 @@ export function Writeablog() {
             </div>
             : 
             <Ifnotloggedin />}
+            <ToastContainer />
     </div>
   )
 }
@@ -73,10 +79,10 @@ export function Writesubcomponent() {
                 // To store the file data that the user uploads
                 setFile2cloudinary(file)
             }else{
-                alert("Selected file size should be less than 5 mb. Please select appropriate file again")
+                toast.error("Selected file size should be less than 5 mb. Please select appropriate file again")
             }
         }else{
-            alert("Selected file type should be JPEG, JPG or PNG. Please select appropriate file again")
+            toast.error("Selected file should be an image & of type should be JPEG, JPG or PNG. Please select appropriate file again")
         }
        
     };
@@ -93,10 +99,10 @@ export function Writesubcomponent() {
         initialValues: {title: "", story: "", tag: ""},
         validationSchema: writeschema,
         onSubmit: (values) => {
-            handleClickOpen();
             // image to upload to cloudinary (using fetch API of cloudinary) & get back the URL of uploaded image to store it in DB blogs collection
             // Before this step ensure that there is an image file selected
             if(file2cloudinary){
+                handleClickOpen();
                 const img2upload = new FormData();
                 img2upload.append('file', file2cloudinary);
                 img2upload.append('upload_preset', 'mtc-uploads')
@@ -119,14 +125,14 @@ export function Writesubcomponent() {
                     }).then((data)=>data.json()).then((data)=>{
                         if(data.acknowledged){
                             handleClose();
-                            alert("The blog post is succesfully uploaded. Redirecting to home.");
+                            // alert("The blog post is succesfully uploaded. Redirecting to home.");
                             navigate("/home");
                         }
                         console.log(data)
                     })
                 })
             }else{
-                alert("An image must be selected to succesfully upload a blog")
+                toast.error("An image must be selected to succesfully upload a blog")
             }
         }
     })

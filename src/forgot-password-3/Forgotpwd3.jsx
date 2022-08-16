@@ -12,6 +12,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
+// react toastift
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 
 
@@ -45,7 +50,8 @@ export function Forgotpwd3() {
                     "content-type": "application/json"
                 }
             }).then((data)=>data.json()).then((data)=>{
-                alert(data.msg)
+                // alert(data.msg)
+                toast.success(data.msg)
                 localStorage.removeItem("email")
                 navigate("/login")
             })
@@ -56,7 +62,7 @@ export function Forgotpwd3() {
   return (
     <div className="fp3">
         <div>
-            <h2>MyTravelCompanion</h2>
+            <h2 style={{textAlign: "center"}}>MyTravelCompanion</h2>
             <p>Welcome to MyTravelCompanion</p>
             <h4>Reset Password</h4>
             <p><KeyIcon /></p>
@@ -123,6 +129,7 @@ export function Forgotpwd3() {
                 <Link style={{fontSize: "15px", textDecoration: "none"}} to="/create-account">New to MyTravelCompanion? Create Account</Link>
             </p>
         </div>
+        <ToastContainer />
     </div>
   )
 }

@@ -11,6 +11,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Ifnotloggedin } from "../if-not-logged-in/Ifnotloggedin";
 
 
+// react toaster
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const base_url = "http://localhost:5000"; 
 
 export function Savedpost() {
@@ -33,7 +38,12 @@ export function Savedpost() {
                 <div className="leftchild">
                     <h2 style={{textAlign: "center"}}>My Saved Blogs</h2>
                     <hr />
-                    {savedposts ? savedposts.map((ele,index)=> <Savedpostsubcomponent obj={ele} key={index} setSavedposts={setSavedposts} />) : "Loading"}
+                    {/* {savedposts ? savedposts.map((ele,index)=> <Savedpostsubcomponent obj={ele} key={index} setSavedposts={setSavedposts} />) : "Loading"} */}
+                    {savedposts ? 
+                        <div>
+                            {savedposts[0] ? savedposts.map((ele,index)=> <Savedpostsubcomponent obj={ele} key={index} setSavedposts={setSavedposts} />) : <h4 style={{textAlign: "center", color: "red"}}>No saved posts by user. Start saving or bookmarking post to read later.</h4>}
+                        </div>
+                    : "Loading"}
                 </div>
                 <div className="rightchild">
                     <Rightchild1 />
@@ -42,6 +52,7 @@ export function Savedpost() {
                 </div>
             </div>
         </div> : <Ifnotloggedin />}
+        <ToastContainer />
     </div>
   )
 }
@@ -80,7 +91,7 @@ export function Savedpostsubcomponent({obj, setSavedposts}) {
                         <Button 
                             // You wiil need to senfd the blog id as well ass the user id. Their matching combo gets deleted. Make a POST fetch call with both the data.
                             onClick={()=>{
-                                alert("Are you sure you want to remove this from your saved blogs.");
+                                // alert("Are you sure you want to remove this from your saved blogs.");
                                 const data2send = {
                                     blog_id: obj.blog_id,
                                     loggeduserid : obj.author_id
@@ -94,6 +105,7 @@ export function Savedpostsubcomponent({obj, setSavedposts}) {
                                 }).then((data)=>data.json()).then((data)=>{
                                     // Set the updated blog list using setState
                                     setSavedposts(data)
+                                    toast.success("Successfully removed the post from your saved posts or bookmarks")
                                 });
                             }}
                             variant="outlined" 
