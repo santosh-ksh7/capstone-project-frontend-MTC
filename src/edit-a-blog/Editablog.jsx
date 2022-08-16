@@ -215,7 +215,7 @@ export function Editcomponent({obj}) {
                 <DialogContentText id="alert-dialog-slide-description">
                     <h3 style={{textAlign: "center", color: "black"}}>Please hold on while we upload your blog.</h3>
                     <p style={{textAlign: "center", color: "red"}}>Do not click anywhere or press any button.</p>
-                    <p style={{textAlign: "center"}}><img src="http://www.professionalservicesllc.com/clients/stoneledge/images/loaders/uploading.gif" alt="uploading gif" style={{width: "150px", height: "150px"}} /></p> 
+                    <p style={{textAlign: "center"}}><img src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" alt="uploading gif" style={{width: "200px", height: "200px", objectFit: "cover"}} /></p> 
                 </DialogContentText>
                 </DialogContent>
             </Dialog>

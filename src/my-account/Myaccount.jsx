@@ -9,6 +9,15 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import{useNavigate} from "react-router-dom";
 import {Ifnotloggedin} from "../if-not-logged-in/Ifnotloggedin";
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
+// DIalog box until the upload process happens
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -74,6 +83,31 @@ export function Leftchild1({obj}){
 export function Rightchild1() {
 
 
+    // dialog-box logic from material UI
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+    // dialog-box logic from material UI
+
+     // dialog-box logic from material UI for 2nd dailogue
+     const [open1, setOpen1] = useState(false);
+
+     const handleClickOpen1 = () => {
+       setOpen1(true);
+     };
+ 
+     const handleClose1 = () => {
+       setOpen1(false);
+     };
+     // dialog-box logic from material UI for 2nd dailogue
+
+
     // delete after designing my-account page. Coz sign-out should only be available there
     function Signout(){
         localStorage.removeItem("_id");
@@ -110,11 +144,73 @@ export function Rightchild1() {
                 </button>
                 <button 
                     style={{cursor: "pointer", color: "white", backgroundColor: "red", borderRadius: "10px", padding: "5px"}}
-                    onClick={()=> {navigate("");}}>
+                    onClick={()=> {
+                        handleClickOpen()
+                    }}>
                     Delete account
                 </button>
             </div>
         </div>
+        <Dialog
+                open={open}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle style={{textAlign: "center"}}>{"Sorry to see you go"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    <h3 style={{textAlign: "center", color: "black"}}>Are you sure you want to delete your account permanently.</h3>
+                    <p style={{textAlign: "center", color: "red"}}>Deleting will delete all your blogs, comment, likes, bookmark.</p>
+                    <p style={{textAlign: "center", color: "red"}}>It is a 1-way process. You can't undo your actions</p>
+                    <div style={{display: "flex", justifyContent: "space-around"}} className="btncont">
+                    <Button variant="outlined" startIcon={<DeleteIcon />} 
+                        onClick={() => {
+                            handleClose();
+                            handleClickOpen1();
+                             
+                            // This should be performed on pressing the confirm button
+
+                            // get hold of _id from local storage
+                            const data2send = {
+                                _id: localStorage.getItem("_id")
+                            }
+                            // first perform cleanup in DB
+                            fetch(`${base_url}/sign/delete-my-account`, {
+                                method: "POST",
+                                body: JSON.stringify(data2send),
+                                headers: {
+                                    "content-type": "application/json"
+                                }
+                            }).then((data) => data.json()).then((data) => alert(data.msgPass))
+                            // // now sign-out
+                            Signout(); 
+                            // // Now send the user to landing page
+                            navigate("/");
+                        }}
+                    >
+                        Proceed to Delete account
+                    </Button>
+                    <Button  onClick={handleClose} variant="outlined">Choose to stay</Button>
+                    </div> 
+                </DialogContentText>
+                </DialogContent>
+            </Dialog>
+            <Dialog
+                open={open1}
+                keepMounted
+                onClose={handleClose1}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle style={{textAlign: "center"}}>{"Delete in progress"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    <h3 style={{textAlign: "center", color: "black"}}>Hold on while we perform cleanup & delete your account.</h3>
+                    <p style={{textAlign: "center", color: "black"}}>Until then avoid pressing any button or clicking anywhere else.</p>
+                    <img style={{width: "200px", height: "200px", objectFit: "cover"}} src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" alt="Loading gif" />
+                </DialogContentText>
+                </DialogContent>
+            </Dialog>
     </div>
   )
 }
