@@ -22,7 +22,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-const base_url = "http://localhost:5000"
+// const base_url = "http://localhost:5000"
+const base_url = "https://mtc-santosh.herokuapp.com"
+
+
 
 
 export function Writeablog() {

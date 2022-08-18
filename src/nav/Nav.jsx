@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 
 
-const base_url = "http://localhost:5000"; 
+// const base_url = "http://localhost:5000"; 
+const base_url = "https://mtc-santosh.herokuapp.com"
+
 
 // Navbar
 export function Nav() {
