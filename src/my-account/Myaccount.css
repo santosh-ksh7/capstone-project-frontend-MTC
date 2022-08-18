@@ -24,3 +24,53 @@
     height: 200px;
     object-fit: cover;
 }
+
+
+.listyle{
+    transition: transform 0.5s;
+}
+
+
+.listyle:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+.uppwdstyle{
+    transition: transform 0.5s;
+}
+
+.uppwdstyle:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+
+.sigoutbtn{
+    transition: transform 0.5s;
+}
+
+
+.sigoutbtn:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+
+.delaccbtn{
+    transition: transform 0.5s;
+}
+
+
+.delaccbtn:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}

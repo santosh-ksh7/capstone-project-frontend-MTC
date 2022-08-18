@@ -53,3 +53,67 @@
     color: black;
 }
 
+
+
+
+.firlet::first-letter{
+    font-size: 40px;
+    color: red;
+}
+
+
+
+
+.styleauthimg:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+.icon1{
+    transition: transform 0.5s;
+}
+
+.icon1:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+
+.icon2{
+    transition: transform 0.5s;
+}
+
+.icon2:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+
+.icon3{
+    transition: transform 0.5s;
+}
+
+.icon3:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}
+
+
+.moreauthstyle{
+    transition: transform(0.5s);
+}
+
+.moreauthstyle:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}

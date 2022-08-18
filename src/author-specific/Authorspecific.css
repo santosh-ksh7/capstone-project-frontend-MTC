@@ -15,3 +15,16 @@
     width: 850px;
     margin: 50px;
 }
+
+
+.kepreaduingmtc{
+    transition: transform 0.5s;
+}
+
+
+.kepreaduingmtc:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}

@@ -126,13 +126,14 @@ export function Rightchild1() {
     <div style={{textAlign: "center", marginBottom: "15px"}}>
         <h2>Quick Links</h2>
         <div className="ri8chld1">
-            <Link style={{textDecoration: "none"}} to="/my-account">My account info</Link>
-            <Link style={{textDecoration: "none"}} to="/my-account/update-account">Update account info</Link>
-            <Link style={{textDecoration: "none"}} to="/my-account/published-blogs">My published blogs</Link>
-            <Link style={{textDecoration: "none"}} to="/my-account/liked-blogs">My liked blogs</Link>
-            <Link style={{textDecoration: "none"}} to="/my-account/saved-blogs">My saved blogs</Link>
+            <Link className="listyle" style={{textDecoration: "none"}} to="/my-account">My account info</Link>
+            <Link className="listyle" style={{textDecoration: "none"}} to="/my-account/update-account">Update account info</Link>
+            <Link className="listyle" style={{textDecoration: "none"}} to="/my-account/published-blogs">My published blogs</Link>
+            <Link className="listyle" style={{textDecoration: "none"}} to="/my-account/liked-blogs">My liked blogs</Link>
+            <Link className="listyle" style={{textDecoration: "none"}} to="/my-account/saved-blogs">My saved blogs</Link>
             <div style={{display: "flex", justifyContent: "space-between", marginTop: "15px", marginBottom: "15px"}}>
                 <button 
+                    className="uppwdstyle"
                     style={{cursor: "pointer", color: "white", backgroundColor: "blue", borderRadius: "10px", padding: "5px"}}
                     onClick={()=> {
                         Signout();
@@ -141,6 +142,7 @@ export function Rightchild1() {
                     Update password
                 </button>
                 <button
+                    className="sigoutbtn"
                     style={{cursor: "pointer", color: "white", backgroundColor: "green", borderRadius: "10px", padding: "5px"}} 
                     onClick={()=> {
                         Signout(); 
@@ -149,6 +151,7 @@ export function Rightchild1() {
                     Sign-out
                 </button>
                 <button 
+                    className="delaccbtn"
                     style={{cursor: "pointer", color: "white", backgroundColor: "red", borderRadius: "10px", padding: "5px"}}
                     onClick={()=> {
                         handleClickOpen()
@@ -186,7 +189,8 @@ export function Rightchild1() {
                                 method: "POST",
                                 body: JSON.stringify(data2send),
                                 headers: {
-                                    "content-type": "application/json"
+                                    "content-type": "application/json",
+                                    "x-auth-token": localStorage.getItem("token")
                                 }
                             }).then((data) => data.json()).then((data) => alert(data.msgPass))
                             // // now sign-out

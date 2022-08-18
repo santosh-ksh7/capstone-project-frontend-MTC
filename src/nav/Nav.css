@@ -28,8 +28,29 @@
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
+    transition: transform 0.5s;
+}
+
+
+.navbarpp:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
 }
 
 
 
 
+.linkstyle{
+    transition: transform 0.5s;
+}
+
+
+
+.linkstyle:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+}

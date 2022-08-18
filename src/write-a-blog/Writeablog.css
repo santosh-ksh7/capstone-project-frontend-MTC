@@ -62,6 +62,15 @@
     cursor: pointer;
     position: fixed;
     right: 150px;
+    transition: transform 0.5s;
+}
+
+
+.subbtn:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
 }
 
 .resbtn{
@@ -73,5 +82,13 @@
     cursor: pointer;
     position: fixed;
     right: 50px;
+    transition: transform 0.5s;
+}
+
+.resbtn:hover{
+    transform: scale(0.95);
+    box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -webkit-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
+    -moz-box-shadow: 10px 10px 16px 0px rgba(0,0,0,0.81);
 }
 

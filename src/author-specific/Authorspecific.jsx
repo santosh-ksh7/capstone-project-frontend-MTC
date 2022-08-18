@@ -28,7 +28,12 @@ export function Authorspecific() {
         // get info about the author
         fetch(`${base_url}/sign/get-author-info/${id}`).then((data)=>data.json()).then((data)=>setAuthordet(data));
         // get all blogs by the user
-        fetch(`${base_url}/sign/get-all-blogs/${id}`).then((data)=>data.json()).then((data)=>setAllblogs(data));
+        fetch(`${base_url}/sign/get-all-blogs/${id}`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+            }
+        }).then((data)=>data.json()).then((data)=>setAllblogs(data));
         // get keep exploring MTC data
         fetch(`${base_url}/get-any-4-random-blogs`).then((data)=>data.json()).then((data)=>setkeepexpmtc(data));
     }, [])
@@ -100,7 +105,7 @@ export function Rckeepexpmtc({obj}) {
 
   return (
     <div>
-        <h4 onClick={()=>navigate(`/open-a-blog/${obj._id}`)} style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", cursor: "pointer"}} >{obj.title} <img style={{width: "40px", height: "40px"}} src={obj.blog_pic} alt={obj.title} /></h4>
+        <h4 className="kepreaduingmtc" onClick={()=>navigate(`/open-a-blog/${obj._id}`)} style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", cursor: "pointer"}} >{obj.title} <img style={{width: "40px", height: "40px"}} src={obj.blog_pic} alt={obj.title} /></h4>
     </div>
   )
 }

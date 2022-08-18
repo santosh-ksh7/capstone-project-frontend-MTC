@@ -29,6 +29,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 
+// react toaster notification
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const base_url = "http://localhost:5000"
@@ -55,14 +59,21 @@ export function Openblog() {
     // FOr like, bookmark & comments data to be as per user record, the user needs to be logged-in.
     if(localStorage.getItem("_id")){
       // the user ObjectId params to backend should be passed from the localstorage only if the user is logged in. This data is required by the comments component to show profile image & name of the user
-      fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data)});
+      fetch(`${base_url}/individual-user-info/${localStorage.getItem("_id")}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          "x-auth-token": localStorage.getItem("token")
+        }
+      }).then((data)=>data.json()).then((data)=>{setLogged_userinfo(data)});
       // fetch call to render the like icon accordingly when the component first mounts
       let data2send= {"blog_id": id,"author_id": localStorage.getItem("_id")}
       fetch(`${base_url}/get-like-info`, {
         method: "POST",
         body : JSON.stringify(data2send),
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
+          "x-auth-token": localStorage.getItem("token")
         }
       }).then((data)=>data.json()).then((data)=>{setLikeonmount(data.msg)})
       // fetch call to render the bookmark icon accordingly when the component first mounts
@@ -71,7 +82,8 @@ export function Openblog() {
         method: "POST",
         body : JSON.stringify(data2send1),
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
+          "x-auth-token": localStorage.getItem("token")
         }
       }).then((data)=>data.json()).then((data)=>{setBookmarkonmount(data.msg)})
     }
@@ -88,6 +100,7 @@ export function Openblog() {
         <div>
             {specific_blog ? <Blogcomponent obj={specific_blog} comments={comments} setComments={setComments} logged_userinfo={logged_userinfo} likeonmount={likeonmount} setLikeonmount={setLikeonmount} blog_id={id} author_id={user_uid} bookmarkonmount={bookmarkonmount} setBookmarkonmount={setBookmarkonmount} keepreadingdata={keepreadingdata} morefromauthor={morefromauthor} /> : null}
         </div>
+        <ToastContainer />
     </div>
   )
 }
@@ -122,7 +135,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
     <div style={{display: "flex"}}>
         <div className="indi_blog leftchild">
             <div className="toprow">
-                    <p title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", color: "black", cursor: "pointer"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
+                    <p className="styleauthimg" title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{display:"flex", alignItems: "center", gap: "8px", color: "black", cursor: "pointer"}}><img className='authorimage' src={obj.user_info.profile_pic} alt={obj.name} />{obj.user_info.name}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}} className='date'><CalendarMonthIcon /> {obj.date}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><AccessTimeIcon /> {obj.time_to_read + " min read"}</p>
                     <p style={{display:"flex", alignItems: "center", gap: "8px"}}><i className="fa-solid fa-tags" />  {obj.tag}</p>
@@ -131,15 +144,16 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
             <div className="midrow">
                 <h2>{obj.title}</h2>
                 <img src={obj.blog_pic} alt={obj.title} />
-                <p style={{textAlign: "left"}}>{obj.story}</p>
+                <p className="firlet" style={{textAlign: "left"}}>{obj.story}</p>
             </div>
             {/* Render this as per user logged - in status */}
             {localStorage.getItem("_id") ? 
               <div className="lastrow" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                  <p>
+                  <p className="icon1">
                       {likeonmount ?
                       <IconButton 
                         onClick={()=>{
+                          toast.success("removed from liked post")
                           setLikeonmount(!likeonmount);
                           setCount(count-1);
                           // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
@@ -148,7 +162,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2send),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log(data2send))
                           // fetch call to remove record to liked_posts collection     --- backend returns nothing
@@ -157,7 +172,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2remove),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log("data2remove", data2remove))
                         }}
@@ -170,6 +186,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                       :
                       <IconButton 
                         onClick={()=>{
+                          toast.success("added to liked post")
                           setLikeonmount(!likeonmount);
                           setCount(count+1);
                           // fetch call to decrement the like      --- the backend need not to return anything & use setCount to store updated like count only in locally
@@ -178,7 +195,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2send),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log(data2send))
                           // fetch call to add record to liked_posts collection     --- backend returns nothing
@@ -187,7 +205,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2put),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log("data2put", data2put))
                         }}
@@ -199,10 +218,11 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                       </IconButton>}
                       {count}
                   </p>
-                  <p>
+                  <p className="icon2">
                       {bookmarkonmount ?
                       <IconButton 
                         onClick={()=>{
+                          toast.success("removed from saved posts")
                           setBookmarkonmount(!bookmarkonmount);
                           // fetch call to remove record from saved_posts collection
                           const data2remove_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
@@ -210,7 +230,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2remove_book),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log(data2remove_book))
                         }}
@@ -223,6 +244,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                       :
                       <IconButton 
                         onClick={()=>{
+                          toast.success("added to saved posts")
                           setBookmarkonmount(!bookmarkonmount);
                           // fetch call to add record to saved_posts collection
                           const data2add_book = {blog_id: blog_id, author_id: localStorage.getItem("_id")}
@@ -230,7 +252,8 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                             method: "POST",
                             body: JSON.stringify(data2add_book),
                             headers: {
-                              "content-type" : "application/json"
+                              "content-type" : "application/json",
+                              "x-auth-token": localStorage.getItem("token")
                             }
                           }).then(()=>console.log(data2add_book))
                         }}
@@ -241,7 +264,7 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
                           </div>
                       </IconButton>}
                   </p>
-                  <p>
+                  <p className="icon3">
                       {trackcomment ?
                       <IconButton onClick={()=>setTrackcomment(!trackcomment)} > 
                         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -260,17 +283,17 @@ export function Blogcomponent({obj, comments, setComments, logged_userinfo, like
               </div> 
               :
               <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                <p 
+                <p className="icon1"
                   onClick={handleClickOpen}
                   style={{display: "flex", alignItems: "center", gap: "8px", cursor : "pointer"}}>
                   <div style={{display: "flex", flexDirection: "column"}}><ThumbUpIcon /> Like</div> {count}
                 </p>
-                <p 
+                <p className="icon1"
                   onClick={handleClickOpen}
                   style={{display: "flex", flexDirection: "column", alignItems: "center", cursor : "pointer"}}>
                   <BookmarkAddIcon /> Add to saved post
                 </p>
-                <p 
+                <p className="icon1"
                   onClick={handleClickOpen}
                   style={{display: "flex", flexDirection: "column", alignItems: "center", cursor : "pointer"}}>
                   <InsertCommentIcon />
@@ -342,7 +365,7 @@ export function About({obj}) {
                 <img style={{width: "150px", height: "163px", objectFit: "cover", borderRadius: "50%"}} src={obj.user_info.profile_pic} alt={obj.user_info.name} />
             <div>
                 {/* Make the name as a link to direct to author specific page */}
-                <h4 title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{margin: "0px", textAlign: "left", cursor: "pointer"}}>{obj.user_info.name}</h4>
+                <h4 className="styleauthimg" title="Go to author specific page" onClick={()=>navigate(`/author-specific/${obj.user_info._id}`)} style={{margin: "0px", textAlign: "left", cursor: "pointer"}}>{obj.user_info.name}</h4>
                 <p style={{marginTop: "7px", marginBottom : "4px", fontSize: "15px", textAlign: "left"}}>{obj.user_info.about}</p>
             </div>
         </div>
@@ -387,7 +410,7 @@ export function Morefromauthorindividual({obj}){
   const navigate = useNavigate();
 
     return(
-        <div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: '8px'}}>
+        <div className="moreauthstyle" style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: '8px'}}>
             <h4 onClick={()=> navigate(`/open-a-blog/${obj._id}`)} style={{marginTop: "0px", cursor: "pointer"}}>{obj.title}</h4>
             <img style={{width: "35px", height: "35px", objectFit: "cover"}} src={obj.blog_pic} alt={obj.title} />
         </div>
@@ -413,9 +436,10 @@ export function Commentsparent({obj, comments, setComments, logged_userinfo}) {
               method: "POST",
               body: JSON.stringify(data_to_put),
               headers: {
-                "content-type" : "application/json"
+                "content-type" : "application/json",
+                "x-auth-token": localStorage.getItem("token")
               }
-            }).then((data) => data.json()).then((data) => {setComments(data); formik.resetForm()})
+            }).then((data) => data.json()).then((data) => {setComments(data); formik.resetForm(); toast.success("comment  successfully added")})
         }
     })
 
