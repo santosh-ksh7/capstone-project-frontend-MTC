@@ -73,7 +73,7 @@ export function Likedpostsubcomponent({obj, setLikedposts}) {
     const navigate = useNavigate();
 
     let short_des = obj.blog_info.story;
-    short_des = short_des.slice(0,10)
+    short_des = short_des.slice(0,150)
 
   return (
     <div className='parenttonormal'>

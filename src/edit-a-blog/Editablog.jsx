@@ -97,7 +97,7 @@ export function Editcomponent({obj}) {
      // Yup validation schema
      const writeschema = yup.object({
         title: yup.string().required(),
-        story: yup.string().required(),
+        story: yup.string().required().min(200),
         tag: yup.string().required()
     })
 
