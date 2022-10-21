@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+#Summary of the Application:-
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A blogging platform for travel enthusiasts wherein users can share their
+experience & created multiple user interactions (e.g- like, comment,
+bookmark, update profile info, edit/delete published blogs, etc).
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+##User interactions built in:-
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Users can create a new account, log-in, log-out & reset their password.
+If logged-in, users should be able to create a blog of their own & publish it, like, comment & add blogs to their bookmarks. However, if not logged-in the dialog opens up giving the user the option to sign-in or sign-in later.
+Also, after publishing the blog, the user can edit or delete it.
+Users can see all their published blogs, liked blogs, and saved blogs in a single place under the my-account section with the ability to remove blogs from my-liked-blogs & my-saved-blogs.
+A user can also update his profile details like - profile image, name, social media handles, about, etc, to make changes available to all places retrospectively.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+##Key highlights:-
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Used Formik & Yup library for user input Validations.
+Used JWT package for authentication, authorization & protection/security of various APIs.
+Used Cloudinary for media mgt. / asset mgt.
+Used Bcrypt package for security in the backend.
+Used Nodemailer for sending e-mails from the app.
+Used Material UI for designing.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+##Application common credentials:-
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Email id: zzz@gmail.com
+Password: 12345678
