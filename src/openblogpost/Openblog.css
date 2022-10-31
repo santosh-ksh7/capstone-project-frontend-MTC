@@ -54,7 +54,9 @@
 }
 
 
-
+.firlet{
+    white-space: pre-wrap;
+}
 
 .firlet::first-letter{
     font-size: 40px;
