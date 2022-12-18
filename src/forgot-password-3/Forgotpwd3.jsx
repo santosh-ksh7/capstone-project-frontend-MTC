@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 // const base_url = "http://localhost:5000";
-const base_url = "https://mtc-santosh.herokuapp.com"
+const base_url = "https://capstone-project-backend-mtc.vercel.app"
 
 
 export function Forgotpwd3() {
